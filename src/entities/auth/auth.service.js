@@ -31,7 +31,9 @@ export const registerUserService = async ({
 
 
 export const loginUserService = async ({ email, password }) => {
-  const user = await User.findOne({ email }).lean()
+  if (!email || !password) throw new Error('Email and password are required');
+
+  const user = await User.findOne({ email })
   if (!user) throw new Error('User not found');
 
   const isMatch = await user.comparePassword(password, user.password);

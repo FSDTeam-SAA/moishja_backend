@@ -6,8 +6,9 @@ import { accessTokenExpires, accessTokenSecrete, refreshTokenExpires, refreshTok
 
 const UserSchema = new mongoose.Schema(
   {
-    fullName: { type: String, required: true },
-    phoneNumber: { type: String, required: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    phoneNumber: { type: String, default: null },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: {
@@ -15,8 +16,8 @@ const UserSchema = new mongoose.Schema(
       default: RoleType.USER,
       enum: [RoleType.USER, RoleType.ADMIN, RoleType.SUPER_ADMIN]
     },
-    verificationCode: String,
-    verificationCodeExpires: Date,
+    verificationCode: { type: String, default: null },
+    verificationCodeExpires: { type: Date, default: null },
     hasActiveSubscription: { type: Boolean, default: false },
     subscriptionExpireDate: { type: Date, default: null },
     profileImage: { type: String, default: '' },
