@@ -57,6 +57,7 @@ app.use(errorHandler);
 
 logger.info('Middleware stack initialized');
 
+//Export the app
 export default app;
 
 
