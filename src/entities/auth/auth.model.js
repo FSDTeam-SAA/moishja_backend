@@ -39,7 +39,8 @@ UserSchema.pre("save", async function (next) {
 });
 
 // Password comparison method (bcrypt)
-UserSchema.methods.comparePassword = async function (plainPassword, hashedPassword) {
+UserSchema.methods.comparePassword = async function (id, plainPassword) {
+  const { password: hashedPassword } = await User.findById(id).select('password')
 
   const isMatched = await bcrypt.compare(plainPassword, hashedPassword)
 
