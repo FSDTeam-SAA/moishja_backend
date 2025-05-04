@@ -1,5 +1,8 @@
 import RoleType from '../../lib/types.js';
 import mongoose from 'mongoose';
+import jwt from "jsonwebtoken";
+import bcrypt from 'bcrypt';
+import { accessTokenExpires, accessTokenSecrete, refreshTokenExpires, refreshTokenSecrete } from '../../core/config/config.js';
 
 const UserSchema = new mongoose.Schema(
   {
@@ -23,5 +26,34 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const User = mongoose.model('User', UserSchema);
+// Hashing password
+UserSchema.pre("save", async function (next) {
+
+  if (!this.isModified("password")) return next();
+
+  const hashedPassword = await bcrypt.hash(this.password, 10);
+
+  this.password = hashedPassword;
+  next();
+});
+
+// Password comparison method (bcrypt)
+UserSchema.methods.comparePassword = async function (plainPassword, hashedPassword) {
+
+  const isMatched = await bcrypt.compare(plainPassword, hashedPassword)
+
+  return isMatched
+}
+
+// Generate ACCESS_TOKEN
+UserSchema.methods.generateAccessToken = function (payload) {
+  return jwt.sign(payload, accessTokenSecrete, { expiresIn: accessTokenExpires });
+};
+
+// Generate REFRESH_TOKEN
+UserSchema.methods.generateRefreshToken = function (payload) {
+  return jwt.sign(payload, refreshTokenSecrete, { expiresIn: refreshTokenExpires });
+};
+
+const User = mongoose.models.User || mongoose.model('User', UserSchema);
 export default User;
