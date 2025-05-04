@@ -37,17 +37,17 @@ export const registerUser = async (req, res, next) => {
 export const loginUser = async (req, res, next) => {
   const { email, password } = req.body;
 
-  if (!email || !password) {
-    return generateResponse(res, 400, false, 'Email and password are required', null);
-  }
-
   try {
     const data = await loginUserService({ email, password })
     generateResponse(res, 200, true, 'Login successful', data);
   }
 
   catch (error) {
-    if (error.message === 'User not found') {
+    if (error.message === 'Email and password are required') {
+      generateResponse(res, 400, false, 'Email and password are required', null);
+    }
+    
+    else if (error.message === 'User not found') {
       generateResponse(res, 404, false, 'User not found', null);
     }
 
