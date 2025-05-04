@@ -16,8 +16,8 @@ const UserSchema = new mongoose.Schema(
       default: RoleType.USER,
       enum: [RoleType.USER, RoleType.ADMIN, RoleType.SUPER_ADMIN]
     },
-    verificationCode: { type: String, default: null },
-    verificationCodeExpires: { type: Date, default: null },
+    otp: { type: String, default: null },
+    otpExpires: { type: Date, default: null },
     refreshToken: {
       type: String,
       default: ''
