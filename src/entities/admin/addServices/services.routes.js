@@ -1,5 +1,5 @@
 import express from 'express';
-import { adminSuperAdminMiddleware } from '../../../core/middlewares/authMiddleware.js';
+import { userAdminSellerMiddleware } from '../../../core/middlewares/authMiddleware.js';
 import {
   createService,
   getServices,
@@ -11,7 +11,7 @@ import {
 const router = express.Router();
 
 // All routes require admin or super admin authentication
-router.use(adminSuperAdminMiddleware);
+router.use(userAdminSellerMiddleware);
 
 // Routes
 router.post('/create', createService);

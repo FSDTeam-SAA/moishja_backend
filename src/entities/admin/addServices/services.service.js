@@ -1,4 +1,4 @@
-import Service from './services.model.js';
+import Service from "../services.model.js";
 
 export const createService = async (serviceData, adminId) => {
   try {
@@ -22,7 +22,7 @@ export const createService = async (serviceData, adminId) => {
 export const getAllServices = async (filters = {}) => {
   try {
     const query = { isActive: true };
-    
+
     // Apply filters
     if (filters.category) {
       query.category = filters.category;
@@ -37,7 +37,7 @@ export const getAllServices = async (filters = {}) => {
     const services = await Service.find(query)
       .populate('adminId', 'fullName email')
       .sort({ createdAt: -1 });
-    
+
     return services;
   } catch (error) {
     const err = new Error('Failed to fetch services');
@@ -50,7 +50,7 @@ export const getServiceById = async (serviceId) => {
   try {
     const service = await Service.findOne({ _id: serviceId, isActive: true })
       .populate('adminId', 'fullName email');
-    
+
     if (!service) {
       const error = new Error('Service not found');
       error.status = 404;
@@ -73,7 +73,7 @@ export const updateService = async (serviceId, updateData, adminId, adminRole) =
       error.status = 404;
       throw error;
     }
-    
+
     if (service.adminId.toString() !== adminId.toString() && adminRole !== 'SUPER_ADMIN') {
       const error = new Error('Not authorized to update this service');
       error.status = 403;
@@ -124,7 +124,7 @@ export const deleteService = async (serviceId, adminId, adminRole) => {
     // Soft delete by setting isActive to false
     service.isActive = false;
     await service.save();
-    
+
     return { message: 'Service deleted successfully' };
   } catch (error) {
     if (error.status) throw error;
