@@ -18,11 +18,15 @@ const UserSchema = new mongoose.Schema(
     },
     verificationCode: { type: String, default: null },
     verificationCodeExpires: { type: Date, default: null },
+    refreshToken: {
+      type: String,
+      default: ''
+    },
     hasActiveSubscription: { type: Boolean, default: false },
     subscriptionExpireDate: { type: Date, default: null },
     profileImage: { type: String, default: '' },
     multiProfileImage: { type: [String], default: [] },
-    pdfFile: { type: String, default: '' },
+    pdfFile: { type: String, default: '' }
   },
   { timestamps: true }
 );
@@ -39,7 +43,8 @@ UserSchema.pre("save", async function (next) {
 });
 
 // Password comparison method (bcrypt)
-UserSchema.methods.comparePassword = async function (plainPassword, hashedPassword) {
+UserSchema.methods.comparePassword = async function (id, plainPassword) {
+  const { password: hashedPassword } = await User.findById(id).select('password')
 
   const isMatched = await bcrypt.compare(plainPassword, hashedPassword)
 
