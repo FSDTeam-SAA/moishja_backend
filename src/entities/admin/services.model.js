@@ -1,8 +1,5 @@
 import mongoose from 'mongoose';
-import RoleType from '../../../lib/types.js';
-
-
-
+import RoleType from '../../lib/types.js';
 
 const serviceSchema = new mongoose.Schema(
   {
@@ -47,14 +44,9 @@ const serviceSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true
-    },
-    price: {
-      type: Number,
-      required: true,
-      min: 0
     }
   },
-  { 
+  {
     timestamps: true,
     versionKey: false
   }
@@ -65,15 +57,15 @@ serviceSchema.index({ name: 1 });
 serviceSchema.index({ category: 1 });
 serviceSchema.index({ adminId: 1 });
 
-serviceSchema.pre('save', async function(next) {
+serviceSchema.pre('save', async function (next) {
   try {
     const User = mongoose.model('User');
     const admin = await User.findById(this.adminId);
-    
+
     if (!admin) {
       throw new Error('Admin user not found');
     }
-    
+
     if (admin.role !== RoleType.ADMIN && admin.role !== RoleType.SUPER_ADMIN) {
       throw new Error('Only admins can create services');
     }

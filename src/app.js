@@ -8,13 +8,11 @@ import cookieParser from 'cookie-parser';
 import path from "path";
 import { fileURLToPath } from "url";
 
-
 import logger from './core/config/logger.js';
 import errorHandler from './core/middlewares/errorMiddleware.js';
 import notFound from './core/middlewares/notFound.js';
 import { globalLimiter } from './lib/limit.js';
 import appRouter from './core/app/appRouter.js';
-
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -59,6 +57,7 @@ app.use(errorHandler);
 
 logger.info('Middleware stack initialized');
 
+//Export the app
 export default app;
 
 
