@@ -2,24 +2,28 @@ import mongoose from 'mongoose';
 
 const houseVisitSchema = new mongoose.Schema(
   {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
     firstName: {
       type: String,
       required: true,
       trim: true,
-      maxlength: 50
+      maxLength: 50
     },
     lastName: {
       type: String,
       required: true,
       trim: true,
-      maxlength: 50
+      maxLength: 50
     },
     mobile: {
-        type: String,
-        required: true,
-        trim: true,
-        match: /^[0-9]{7,15}$/ 
-      },
+      type: String,
+      required: true,
+      trim: true
+    },
     currentAddress: {
       type: String,
       required: true,
@@ -37,18 +41,14 @@ const houseVisitSchema = new mongoose.Schema(
     },
     comments: {
       type: String,
-      maxlength: 1000,
+      maxLength: 1000,
       trim: true
     },
     status: {
-        type: String,
-        enum: ['not-visited', 'visited', 'cancelled'],
-        default: 'not-visited'
-      },
-    createdAt: {
-      type: Date,
-      default: Date.now
-    }
+      type: String,
+      enum: ['not-visited', 'visited', 'cancelled'],
+      default: 'not-visited'
+    },
   },
   { timestamps: true }
 );
