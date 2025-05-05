@@ -1,13 +1,35 @@
+import { cloudinaryUpload } from "../../lib/cloudinaryUpload.js";
 import Service from "./services.model.js";
 
 
 
-export const createService = async (serviceData, adminId) => {
+export const createService = async (serviceData, adminId,files) => {
   try {
+    const uploadedPhotos = [];
+
+    if (files && files.photos && files.photos.length > 0) {
+      for (const photo of files.photos) {
+        const sanitizedTitle = serviceData.name
+          .toLowerCase()
+          .replace(/\s+/g, "-")
+          .replace(/[?&=]/g, "");
+
+        const result = await cloudinaryUpload(photo.path, sanitizedTitle, "services");
+
+        if (typeof result === "string" || !result?.secure_url) {
+          throw new Error("Cloudinary upload failed");
+        }
+
+        uploadedPhotos.push(result.secure_url);
+      }
+    }
+
     const service = new Service({
       ...serviceData,
-      adminId
+      photos: uploadedPhotos,
+      adminId,
     });
+  
     console.log(serviceData, adminId);
     await service.save();
     return service;

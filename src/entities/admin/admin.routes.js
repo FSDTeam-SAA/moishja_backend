@@ -5,6 +5,7 @@ import express from 'express';
 
 import { adminMiddleware } from '../../core/middlewares/authMiddleware.js';
 import { createService, deleteService, getAllServices, getServiceById, updateService } from './admin.controller.js';
+import { multerUpload } from '../../core/middlewares/multer.js';
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ const router = express.Router();
 router.use(adminMiddleware);
 
 // Routes
-router.post('/create', createService);
+router.post('/create',multerUpload([{ name: "photos", maxCount: 5 },]), createService);
 router.get('/', getAllServices);
 router.get('/:id', getServiceById);
 router.put('/:id', updateService);
