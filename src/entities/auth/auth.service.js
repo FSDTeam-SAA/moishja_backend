@@ -37,7 +37,7 @@ export const loginUserService = async ({ email, password }) => {
   const isMatch = await user.comparePassword(user._id, password);
   if (!isMatch) throw new Error('Invalid password');
 
-  const payload = { _id: user._id };
+  const payload = { _id: user._id, role: user.role };
 
   const data = {
     user,

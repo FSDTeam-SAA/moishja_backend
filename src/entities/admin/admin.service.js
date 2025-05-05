@@ -1,4 +1,6 @@
-import Service from "../services.model.js";
+import Service from "./services.model.js";
+
+
 
 export const createService = async (serviceData, adminId) => {
   try {
@@ -6,9 +8,11 @@ export const createService = async (serviceData, adminId) => {
       ...serviceData,
       adminId
     });
+    console.log(serviceData, adminId);
     await service.save();
     return service;
   } catch (error) {
+    console.log(error);
     if (error.name === 'ValidationError') {
       const errorMessage = Object.values(error.errors).map(err => err.message).join(', ');
       const err = new Error(errorMessage);
