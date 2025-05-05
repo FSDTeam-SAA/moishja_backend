@@ -3,34 +3,34 @@ import Service from "./services.model.js";
 
 
 
-export const createService = async (serviceData,files, adminId) => {
+export const createService = async (serviceData, adminId,files) => {
   try {
-    const service = new Service({ 
+    const uploadedPhotos = [];
+
+    if (files && files.photos && files.photos.length > 0) {
+      for (const photo of files.photos) {
+        const sanitizedTitle = serviceData.name
+          .toLowerCase()
+          .replace(/\s+/g, "-")
+          .replace(/[?&=]/g, "");
+
+        const result = await cloudinaryUpload(photo.path, sanitizedTitle, "services");
+
+        if (typeof result === "string" || !result?.secure_url) {
+          throw new Error("Cloudinary upload failed");
+        }
+
+        uploadedPhotos.push(result.secure_url);
+      }
+    }
+
+    const service = new Service({
       ...serviceData,
-      files,
-      adminId
+      photos: uploadedPhotos,
+      adminId,
     });
-
-
-      if (!files || !files.adminImage || files.adminImage.length === 0) {
-        throw new Error('Profile image is required');
-      }
-    
-      const adminImage = files.adminImage[0];
-      const sanitizedTitle = userFound.fullName
-        .toLowerCase()
-        .replace(/\s+/g, "-")
-        .replace(/[?&=]/g, "");
-    
-      const imgUrl = await cloudinaryUpload(adminImage.path, sanitizedTitle, "adminImage");
-      if (imgUrl === "file upload failed") {
-        throw new Error('File upload failed');
-      }
-
-
-    console.log("body data",serviceData, adminId);
-
-
+  
+    console.log(serviceData, adminId);
     await service.save();
     return service;
   } catch (error) {
@@ -141,7 +141,7 @@ export const deleteService = async (serviceId, adminId, adminRole) => {
       throw error;
     }
 
-    if (service.adminId.toString() !== adminId.toString() && adminRole !== 'SUPER_ADMIN') {
+    if (service.adminId.toString() !== adminId.toString() && adminRole !== 'ADMIN') {
       const error = new Error('Not authorized to delete this service');
       error.status = 403;
       throw error;

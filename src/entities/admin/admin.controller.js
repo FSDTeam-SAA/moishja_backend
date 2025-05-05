@@ -1,15 +1,14 @@
 
+import { cloudinaryUpload } from '../../lib/cloudinaryUpload.js';
 import { generateResponse } from '../../lib/responseFormate.js';
 import * as serviceService from './admin.service.js';
 
 
-
-export const createAdminController = async (req, res) => {
-
-  console.log("From controller",req.body,req.files, req.user._id);
-
+export const createService = async (req, res) => {
+  
   try {
-    const service = await serviceService.createService(req.body,req.files, req.user._id);
+    
+    const service = await serviceService.createService(req.body, req.user._id,req.files);
     // console.log(req.body, req.user._id);
     generateResponse(res, 201, true, 'Service created successfully',service);
   } catch (error) {
