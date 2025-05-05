@@ -1,6 +1,6 @@
 
 import { generateResponse } from '../../lib/responseFormate.js';
-import * as serviceService from './admin.service.js'
+import * as serviceService from './admin.service.js';
 
 
 export const createService = async (req, res) => {
@@ -12,7 +12,7 @@ export const createService = async (req, res) => {
   }
 };
 
-export const getServices = async (req, res) => {
+export const getAllServices = async (req, res) => {
   try {
     const filters = {
       category: req.query.category,
