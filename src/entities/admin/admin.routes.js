@@ -4,7 +4,7 @@ import express from 'express';
 
 
 import { adminMiddleware } from '../../core/middlewares/authMiddleware.js';
-import { createService, deleteService, getAllServices, getServiceById, updateService } from './admin.service.js';
+import { createService, deleteService, getAllServices, getServiceById, updateService } from './admin.controller.js';
 
 const router = express.Router();
 

@@ -12,6 +12,7 @@ export const createService = async (serviceData, adminId) => {
     await service.save();
     return service;
   } catch (error) {
+    console.log(error);
     if (error.name === 'ValidationError') {
       const errorMessage = Object.values(error.errors).map(err => err.message).join(', ');
       const err = new Error(errorMessage);

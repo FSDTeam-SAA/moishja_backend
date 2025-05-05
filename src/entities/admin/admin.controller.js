@@ -6,7 +6,8 @@ import * as serviceService from './admin.service.js';
 export const createService = async (req, res) => {
   try {
     const service = await serviceService.createService(req.body, req.user._id);
-    generateResponse(res, 201, true, 'Service created successfully', service);
+    // console.log(req.body, req.user._id);
+    generateResponse(res, 201, true, 'Service created successfully',service);
   } catch (error) {
     generateResponse(res, error.status || 400, false, error.message);
   }
