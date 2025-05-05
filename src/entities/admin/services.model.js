@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import RoleType from '../../lib/types.js';
 
+
 const serviceSchema = new mongoose.Schema(
   {
     name: {

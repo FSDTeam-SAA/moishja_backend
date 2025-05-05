@@ -1,5 +1,7 @@
-import * as serviceService from './services.service.js';
-import { generateResponse } from '../../../lib/responseFormate.js';
+
+import { generateResponse } from '../../lib/responseFormate.js';
+import * as serviceService from './admin.service.js'
+
 
 export const createService = async (req, res) => {
   try {
