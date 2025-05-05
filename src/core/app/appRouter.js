@@ -6,6 +6,7 @@ import adminRoutes from '../../entities/admin/admin.routes.js';
 import contactRoutes from '../../entities/contact/contact.routes.js';
 import removalRequestRoutes from '../../entities/removalRequest/removalRequest.routes.js';
 
+import houseVisitRoutes from '../../entities/houseVisit/houseVisit.routes.js'
 const router = express.Router();
 
 // Define all your routes here
@@ -15,5 +16,6 @@ router.use('/v1/user', userRoutes);
 router.use('/v1/admin', adminRoutes);
 router.use('/v1/removalRequest', removalRequestRoutes);
 router.use('/v1/contact', contactRoutes)
+router.use('/v1/houseVisit',houseVisitRoutes )
 
 export default router;
