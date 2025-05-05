@@ -5,7 +5,6 @@ import userRoutes from '../../entities/user/user.routes.js';
 import adminRoutes from '../../entities/admin/admin.routes.js';
 import contactRoutes from '../../entities/contact/contact.routes.js';
 import removalRequestRoutes from '../../entities/removalRequest/removalRequest.routes.js';
-
 import houseVisitRoutes from '../../entities/houseVisit/houseVisit.routes.js'
 const router = express.Router();
 
