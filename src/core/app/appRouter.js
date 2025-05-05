@@ -3,6 +3,7 @@ import testRoutes from '../../entities/test/b.routes.js';
 import authRoutes from '../../entities/auth/auth.routes.js';
 import userRoutes from '../../entities/user/user.routes.js';
 import adminRoutes from '../../entities/admin/admin.routes.js';
+import contactRoutes from '../../entities/contact/contact.routes.js';
 
 const router = express.Router();
 
@@ -11,5 +12,7 @@ router.use('/v1/tests', testRoutes);
 router.use('/v1/auth', authRoutes);
 router.use('/v1/user', userRoutes);
 router.use('/v1/admin', adminRoutes);
+
+router.use('/v1/contact', contactRoutes)
 
 export default router;
