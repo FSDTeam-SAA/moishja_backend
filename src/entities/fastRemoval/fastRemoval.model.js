@@ -1,44 +1,43 @@
 import mongoose from 'mongoose';
 
 const fastRemovalRequestSchema = new mongoose.Schema(
-    
-       {
-        userId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
-            required: true
-          },
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
     firstName: {
       type: String,
       required: true,
       trim: true,
-      maxlength: 50
+      maxLength: 50
     },
     lastName: {
       type: String,
       required: true,
       trim: true,
-      maxlength: 50
+      maxLength: 50
     },
     mobile: {
       type: String,
       required: true,
       trim: true,
-      match: /^[0-9]{7,15}$/ 
+      match: /^[0-9]{7,15}$/
     },
     email: {
       type: String,
       required: true,
       trim: true,
       lowercase: true,
-      match: /^\S+@\S+\.\S+$/ 
+      match: /^\S+@\S+\.\S+$/
     },
     currentCity: {
       type: String,
       required: true,
       trim: true
     },
-    currentSuburb: {
+    suburbs: {
       type: String,
       required: true,
       trim: true
@@ -57,29 +56,25 @@ const fastRemovalRequestSchema = new mongoose.Schema(
       type: Date,
       required: true
     },
-    movingOptions: {
+    pickupInfo: {
       packing: { type: Boolean, default: false },
       cleaning: { type: Boolean, default: false }
     },
-    
-    deliveryNeeds: {
+
+    deliveryInfo: {
       unpacking: { type: Boolean, default: false },
       cleaning: { type: Boolean, default: false },
       storage: { type: Boolean, default: false }
     },
-    description: {
+    comments: {
       type: String,
-      maxlength: 1000,
+      maxLength: 1000,
       trim: true
     },
     status: {
-        type: String,
-        enum: ['pending', 'approved', 'in-progress', 'completed', 'rejected'],
-        default: 'pending'
-      },
-    createdAt: {
-      type: Date,
-      default: Date.now
+      type: String,
+      enum: ['pending', 'approved', 'in-progress', 'completed', 'rejected'],
+      default: 'pending'
     }
   },
   { timestamps: true }

@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
 
-const locationSchema = new mongoose.Schema(
+const addressSchema = new mongoose.Schema(
   {
-    address: { type: String, required: true },
     city: { type: String, required: true },
     suburb: { type: String, required: true },
     state: { type: String, required: true },
@@ -33,7 +32,7 @@ const contactSchema = new mongoose.Schema(
       lowercase: true,
       match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     },
-    location: { type: locationSchema, required: true }
+    address: { type: addressSchema, required: true }
   },
   { _id: false }
 );
@@ -42,10 +41,10 @@ const removalRequestSchema = new mongoose.Schema(
 
   {
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-      }, 
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
     senderInfo: { type: contactSchema, required: true },
     recipientInfo: { type: contactSchema, required: true },
 
@@ -56,12 +55,10 @@ const removalRequestSchema = new mongoose.Schema(
       default: [],
     },
     status: {
-        type: String,
-        enum: ['pending', 'approved', 'in-progress', 'completed', 'rejected'],
-        default: 'pending'
-      },
-
-    createdAt: { type: Date, default: Date.now }
+      type: String,
+      enum: ['pending', 'approved', 'in-progress', 'completed', 'rejected'],
+      default: 'pending'
+    }
   },
   { timestamps: true }
 );
