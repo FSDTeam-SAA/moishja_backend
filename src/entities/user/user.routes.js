@@ -12,6 +12,7 @@ const router = express.Router();
 router.get("/all-users", getAllUsersController);
 router.get("/all-admins", getAllAdminsController);
 router.get("/all-super-admins", getAllSuperAdminsController);
+
 router.get("/:id", getUserByIdController);
 router.put("/:id", updateUserController);
 router.delete("/:id", deleteUserController);
@@ -29,4 +30,6 @@ router.put("/upload-file/:id",multerUpload([{ name: "userPDF", maxCount: 1 },]),
 router.delete("/upload-file/:id",deleteUserPDFController);
 
 export default router;
+
+
 
