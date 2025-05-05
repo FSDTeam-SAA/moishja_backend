@@ -27,7 +27,6 @@ export const registerUserService = async ({
   return { _id, firstName, lastName, email, role, profileImage };
 };
 
-
 export const loginUserService = async ({ email, password }) => {
   if (!email || !password) throw new Error('Email and password are required');
 
