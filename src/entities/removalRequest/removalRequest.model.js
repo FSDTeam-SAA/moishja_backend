@@ -2,6 +2,10 @@ import mongoose from 'mongoose';
 
 const pickupInfoSchema = new mongoose.Schema(
   {
+    firstName: { type: String, required: true, trim: true },
+    lastName: { type: String, required: true, trim: true },
+    mobile: { type: String, required: true, trim: true },
+    email: { type: String, required: true, trim: true, lowercase: true },
     city: { type: String, required: true, trim: true },
     suburb: { type: String, required: true, trim: true },
     state: { type: String, required: true, trim: true },
@@ -15,6 +19,10 @@ const pickupInfoSchema = new mongoose.Schema(
 
 const deliveryInfoSchema = new mongoose.Schema(
   {
+    firstName: { type: String, required: true, trim: true },
+    lastName: { type: String, required: true, trim: true },
+    mobile: { type: String, required: true, trim: true },
+    email: { type: String, required: true, trim: true, lowercase: true },
     city: { type: String, required: true, trim: true },
     suburb: { type: String, required: true, trim: true },
     state: { type: String, required: true, trim: true },
@@ -42,11 +50,6 @@ const removalRequestSchema = new mongoose.Schema(
       ref: 'User',
       required: true
     },
-
-    firstName: { type: String, required: true, trim: true },
-    lastName: { type: String, required: true, trim: true },
-    mobile: { type: String, required: true, trim: true },
-    email: { type: String, required: true, trim: true, lowercase: true },
 
     pickupInfo: {
       type: pickupInfoSchema,
