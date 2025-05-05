@@ -2,7 +2,7 @@ import express from 'express';
 import testRoutes from '../../entities/test/b.routes.js';
 import authRoutes from '../../entities/auth/auth.routes.js';
 import userRoutes from '../../entities/user/user.routes.js';
-import adminRoutes from '../../entities/admin/addServices/services.routes.js';
+import adminRoutes from '../../entities/admin/admin.routes.js';
 
 const router = express.Router();
 

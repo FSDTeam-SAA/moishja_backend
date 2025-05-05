@@ -20,13 +20,20 @@
           "name": "Register User",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"fullName\": \"John Doe\",\n  \"phoneNumber\": \"1234567890\",\n  \"email\": \"john@example.com\",\n  \"password\": \"Password123\"\n}"
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"phoneNumber\": \"1234567890\",\n  \"email\": \"john@example.com\",\n  \"password\": \"Password123\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/v1/auth/register"
+              "raw": "{{base_url}}/api/v1/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "register"]
             }
           }
         },
@@ -34,13 +41,20 @@
           "name": "Login User",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"Password123\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/v1/auth/login"
+              "raw": "{{base_url}}/api/v1/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "login"]
             }
           }
         },
@@ -48,13 +62,20 @@
           "name": "Refresh Token",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"refreshTokenBody\": \"<paste_your_refresh_token_here>\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/v1/auth/refresh-token"
+              "raw": "{{base_url}}/api/v1/auth/refresh-token",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "refresh-token"]
             }
           }
         },
@@ -62,13 +83,20 @@
           "name": "Forget Password",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"john@example.com\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/v1/auth/forget-password"
+              "raw": "{{base_url}}/api/v1/auth/forget-password",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "forget-password"]
             }
           }
         },
@@ -76,13 +104,20 @@
           "name": "Verify Code",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"john@example.com\",\n  \"verificationCode\": 123456\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/v1/auth/verify-code"
+              "raw": "{{base_url}}/api/v1/auth/verify-code",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "verify-code"]
             }
           }
         },
@@ -90,13 +125,20 @@
           "name": "Reset Password",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"NewPassword123\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/v1/auth/reset-password"
+              "raw": "{{base_url}}/api/v1/auth/reset-password",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "reset-password"]
             }
           }
         }
@@ -109,79 +151,105 @@
         {
           "name": "Get All Users",
           "request": {
-            "url": {
-              "raw": "{{base_url}}/api/v1/user/all-users?page=1&limit=10&search=John&date=2024-01-01"
-            },
             "method": "GET",
-            "description": "Fetch all users with pagination and filters"
+            "description": "Fetch all users with pagination and filters",
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/all-users?page=1&limit=10&search=John&date=2024-01-01",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "user", "all-users"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "search", "value": "John" },
+                { "key": "date", "value": "2024-01-01" }
+              ]
+            }
           }
         },
         {
           "name": "Get All Admins",
           "request": {
-            "url": {
-              "raw": "{{base_url}}/api/v1/user/all-admins?page=1&limit=10&search=John"
-            },
             "method": "GET",
-            "description": "Fetch all admin users with pagination and search"
+            "description": "Fetch all admin users with pagination and search",
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/all-admins?page=1&limit=10&search=John",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "user", "all-admins"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "search", "value": "John" }
+              ]
+            }
           }
         },
         {
           "name": "Get All Super Admins",
           "request": {
-            "url": {
-              "raw": "{{base_url}}/api/v1/user/all-super-admins?page=1&limit=10&search=Admin"
-            },
             "method": "GET",
-            "description": "Fetch all super admin users with pagination and search"
+            "description": "Fetch all super admin users with pagination and search",
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/all-super-admins?page=1&limit=10&search=Admin",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "user", "all-super-admins"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "search", "value": "Admin" }
+              ]
+            }
           }
         },
         {
           "name": "Get User by ID",
           "request": {
-            "url": {
-              "raw": "{{base_url}}/api/v1/user/6604fc41213448d394db854a"
-            },
             "method": "GET",
-            "description": "Fetch a single user by ID"
+            "description": "Fetch a single user by ID",
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/6604fc41213448d394db854a",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "user", "6604fc41213448d394db854a"]
+            }
           }
         },
         {
           "name": "Update User",
           "request": {
-            "url": {
-              "raw": "{{base_url}}/api/v1/user/6604fc41213448d394db854a"
-            },
             "method": "PUT",
+            "description": "Update a user's details",
             "body": {
               "mode": "raw",
-              "raw": "{\"name\": \"Updated Name\", \"email\": \"updated@example.com\"}",
+              "raw": "{\n  \"firstName\": \"Updated\",\n  \"lastName\": \"Name\",\n  \"email\": \"updated@example.com\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
                 }
               }
             },
-            "description": "Update a user's details"
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/6604fc41213448d394db854a",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "user", "6604fc41213448d394db854a"]
+            }
           }
         },
         {
           "name": "Delete User",
           "request": {
-            "url": {
-              "raw": "{{base_url}}/api/v1/user/6604fc41213448d394db854a"
-            },
             "method": "DELETE",
-            "description": "Delete a user by ID"
+            "description": "Delete a user by ID",
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/6604fc41213448d394db854a",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "user", "6604fc41213448d394db854a"]
+            }
           }
         },
         {
           "name": "Upload Avatar",
           "request": {
-            "url": {
-              "raw": "{{base_url}}/api/v1/user/upload-avatar"
-            },
             "method": "POST",
+            "description": "Upload a user's avatar image",
             "body": {
               "mode": "formdata",
               "formdata": [
@@ -197,10 +265,15 @@
                 }
               ]
             },
-            "description": "Upload a user's avatar image"
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/upload-avatar",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "user", "upload-avatar"]
+            }
           }
         }
       ]
     }
   ]
+
 }

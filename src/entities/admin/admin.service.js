@@ -1,14 +1,40 @@
-import Service from "../services.model.js";
+import { cloudinaryUpload } from "../../lib/cloudinaryUpload.js";
+import Service from "./services.model.js";
 
-export const createService = async (serviceData, adminId) => {
+
+
+export const createService = async (serviceData,files, adminId) => {
   try {
-    const service = new Service({
+    const service = new Service({ 
       ...serviceData,
+      files,
       adminId
     });
+
+
+      if (!files || !files.adminImage || files.adminImage.length === 0) {
+        throw new Error('Profile image is required');
+      }
+    
+      const adminImage = files.adminImage[0];
+      const sanitizedTitle = userFound.fullName
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[?&=]/g, "");
+    
+      const imgUrl = await cloudinaryUpload(adminImage.path, sanitizedTitle, "adminImage");
+      if (imgUrl === "file upload failed") {
+        throw new Error('File upload failed');
+      }
+
+
+    console.log("body data",serviceData, adminId);
+
+
     await service.save();
     return service;
   } catch (error) {
+    console.log(error);
     if (error.name === 'ValidationError') {
       const errorMessage = Object.values(error.errors).map(err => err.message).join(', ');
       const err = new Error(errorMessage);
