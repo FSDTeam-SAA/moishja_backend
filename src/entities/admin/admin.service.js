@@ -141,7 +141,7 @@ export const deleteService = async (serviceId, adminId, adminRole) => {
       throw error;
     }
 
-    if (service.adminId.toString() !== adminId.toString() && adminRole !== 'SUPER_ADMIN') {
+    if (service.adminId.toString() !== adminId.toString() && adminRole !== 'ADMIN') {
       const error = new Error('Not authorized to delete this service');
       error.status = 403;
       throw error;
