@@ -1,59 +1,70 @@
 import mongoose from 'mongoose';
 
-const addressSchema = new mongoose.Schema(
+const pickupInfoSchema = new mongoose.Schema(
   {
-    city: { type: String, required: true },
-    suburb: { type: String, required: true },
-    state: { type: String, required: true },
-    postcode: {
-      type: String,
-      required: true,
-      trim: true,
-      match: /^[0-9]{4,6}$/
-    }
+    city: { type: String, required: true, trim: true },
+    suburb: { type: String, required: true, trim: true },
+    state: { type: String, required: true, trim: true },
+    postcode: { type: String, required: true, trim: true },
+    movingDate: { type: String, required: true, trim: true },
+    needPacking: { type: String, enum: ['yes', 'no'], required: true },
+    needMoreServices: { type: String, default: '' }
   },
   { _id: false }
 );
 
-const contactSchema = new mongoose.Schema(
+const deliveryInfoSchema = new mongoose.Schema(
   {
-    firstName: { type: String, required: true, trim: true },
-    lastName: { type: String, required: true, trim: true },
-    mobile: {
-      type: String,
-      required: true,
-      trim: true,
-      match: /^[0-9]{8,15}$/
-    },
-    email: {
-      type: String,
-      required: true,
-      trim: true,
-      lowercase: true,
-      match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    },
-    address: { type: addressSchema, required: true }
+    city: { type: String, required: true, trim: true },
+    suburb: { type: String, required: true, trim: true },
+    state: { type: String, required: true, trim: true },
+    postcode: { type: String, required: true, trim: true },
+    movingDate: { type: String, required: true, trim: true },
+    needUnPacking: { type: String, enum: ['yes', 'no'], required: true },
+    needMoreServices: { type: String, default: '' }
+  },
+  { _id: false }
+);
+
+const selectedItemSchema = new mongoose.Schema(
+  {
+    room: { type: String, required: true },
+    item: { type: String, required: true },
+    quantity: { type: Number, required: true, min: 1 }
   },
   { _id: false }
 );
 
 const removalRequestSchema = new mongoose.Schema(
-
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true
     },
-    senderInfo: { type: contactSchema, required: true },
-    recipientInfo: { type: contactSchema, required: true },
 
-    movingDate: { type: Date, required: true },
-    needPacking: { type: Boolean, default: false },
-    otherServices: {
-      type: [String],
-      default: [],
+    firstName: { type: String, required: true, trim: true },
+    lastName: { type: String, required: true, trim: true },
+    mobile: { type: String, required: true, trim: true },
+    email: { type: String, required: true, trim: true, lowercase: true },
+
+    pickupInfo: {
+      type: pickupInfoSchema,
+      required: true
     },
+
+    deliveryInfo: {
+      type: deliveryInfoSchema,
+      required: true
+    },
+
+    selectedItems: {
+      type: [selectedItemSchema],
+      default: []
+    },
+
+    otherAccessories: { type: String, default: '' },
+
     status: {
       type: String,
       enum: ['pending', 'approved', 'in-progress', 'completed', 'rejected'],
@@ -63,5 +74,5 @@ const removalRequestSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const RemovalRequest = mongoose.model('DeliveryRequest', removalRequestSchema);
+const RemovalRequest = mongoose.model('RemovalRequest', removalRequestSchema);
 export default RemovalRequest;
