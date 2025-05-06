@@ -11,26 +11,23 @@ export const getAllUserServicesService = async (userId) => {
 
     // Format each service type
     const formattedFastRemovals = fastRemovals.map(item => ({
-        serviceType: 'Free & Fast Removal',
+        serviceName: 'Free & Fast Removal',
         status: item.status,
-        date: item.date || item.createdAt,
-        address: item.address,
+        date: item.createdAt,
         id: item._id,
     }));
 
     const formattedHouseVisits = houseVisits.map(item => ({
-        serviceType: 'House Visit',
+        serviceName: 'House Visit',
         status: item.status,
-        date: item.visitDate || item.createdAt,
-        address: item.address,
+        date: item.createdAt,
         id: item._id,
     }));
 
     const formattedRemovalRequests = removalRequests.map(item => ({
-        serviceType: 'Removal Request',
+        serviceName: 'Removal Request',
         status: item.status,
-        date: item.requestedDate || item.createdAt,
-        address: item.pickupAddress,
+        date: item.createdAt,
         id: item._id,
     }));
 
@@ -39,7 +36,7 @@ export const getAllUserServicesService = async (userId) => {
         ...formattedFastRemovals,
         ...formattedHouseVisits,
         ...formattedRemovalRequests,
-    ].sort((a, b) => new Date(b.date) - new Date(a.date));
+    ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
     return mergedServices;
 }
