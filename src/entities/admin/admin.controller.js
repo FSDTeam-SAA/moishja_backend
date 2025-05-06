@@ -19,6 +19,7 @@ export const createService = async (req, res) => {
 
 
 export const getAllServices = async (req, res) => {
+  
   try {
     const filters = {
       category: req.query.category,
@@ -31,6 +32,7 @@ export const getAllServices = async (req, res) => {
     const skip = (page - 1) * limit;
 
     const [services, totalData] = await serviceService.getAllServices(filters, skip, limit);
+    
 
     const pagination = createPaginationInfo(page, limit, totalData);
 
