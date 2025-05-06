@@ -17,9 +17,9 @@ import {
   createUserPDF,
   updateUserPDF,
   deleteUserPDF,
-  
-  
+
 } from "./user.service.js";
+
 
 export const getAllUsersController = async (req, res) => {
   try {
@@ -31,6 +31,7 @@ export const getAllUsersController = async (req, res) => {
   }
 };
 
+
 export const getAllAdminsController = async (req, res) => {
   try {
     const { page, limit, search, date } = req.query;
@@ -40,6 +41,7 @@ export const getAllAdminsController = async (req, res) => {
     generateResponse(res, 500, false, 'Failed to fetch admins', null);
   }
 };
+
 
 export const getAllSuperAdminsController = async (req, res) => {
   try {
@@ -51,6 +53,7 @@ export const getAllSuperAdminsController = async (req, res) => {
   }
 };
 
+
 export const getUserByIdController = async (req, res) => {
   try {
     const { id } = req.params;
@@ -61,6 +64,7 @@ export const getUserByIdController = async (req, res) => {
   }
 };
 
+
 export const updateUserController = async (req, res) => {
   try {
     const { id } = req.params;
@@ -70,6 +74,7 @@ export const updateUserController = async (req, res) => {
     generateResponse(res, 500, false, 'Failed to update user', null);
   }
 };
+
 
 export const deleteUserController = async (req, res) => {
   try {
@@ -82,29 +87,36 @@ export const deleteUserController = async (req, res) => {
 };
 
 
-
-
 export const createAvatarController = async (req, res) => {
   try {
     const { id } = req.params;
+    
+    if (!req.files?.profileImage) {
+      return generateResponse(res, 400, false, 'Profile image is required');
+    }
+
     const user = await createAvatarProfile(id, req.files);
     generateResponse(res, 200, true, 'Avatar uploaded successfully', user);
   } catch (error) {
-    generateResponse(res, 500, false, 'Failed to upload avatar', null);
+    console.error(error);
+    const status = error.message.includes('not found') ? 404 : 500;
+    const message = status === 500 ? 'Failed to upload avatar' : error.message;
+    generateResponse(res, status, false, message);
   }
 };
-
 
 
 export const updateAvatarProfileController = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await updateAvatarProfile(id, req.files);
-    generateResponse(res, 200, true, 'Avatar uploaded successfully', user);
+    generateResponse(res, 200, true, 'Avatar updated successfully', user); 
   } catch (error) {
-    generateResponse(res, 500, false, 'Failed to upload avatar', error.message);
+    console.error(error);
+    generateResponse(res, 500, false, 'Failed to update avatar', error.message);
   }
 };
+
 
 export const deleteAvatarController = async (req, res) => {
   try {
@@ -112,10 +124,10 @@ export const deleteAvatarController = async (req, res) => {
     const updatedUser = await deleteAvatarProfile(id);
     generateResponse(res, 200, true, 'Avatar deleted successfully', updatedUser);
   } catch (error) {
-    generateResponse(res, 500, false, 'Failed to delete avatar', null);
+    console.error(error);
+    generateResponse(res, 500, false, 'Failed to delete avatar', error.message);
   }
 };
-
 
 
 export const createMultipleAvatarController = async (req, res) => {
@@ -128,6 +140,7 @@ export const createMultipleAvatarController = async (req, res) => {
   }
 };
 
+
 export const updateMultipleAvatarController = async (req, res) => {
   try {
     const { id } = req.params;
@@ -138,6 +151,7 @@ export const updateMultipleAvatarController = async (req, res) => {
   }
 };
 
+
 export const deleteMultipleAvatarController = async (req, res) => {
   try {
     const { id } = req.params;
@@ -147,6 +161,7 @@ export const deleteMultipleAvatarController = async (req, res) => {
     generateResponse(res, 500, false, 'Failed to delete multiple avatars', null);
   }
 };
+
 
 export const createUserPDFController = async (req, res) => {
   try {
@@ -167,6 +182,7 @@ export const updateUserPDFController = async (req, res) => {
     generateResponse(res, 500, false, 'Failed to upload PDF', null);
   }
 };
+
 
 export const deleteUserPDFController = async (req, res) => {
   try {

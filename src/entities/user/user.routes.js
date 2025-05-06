@@ -5,6 +5,7 @@ import {
      createMultipleAvatarController,updateMultipleAvatarController,deleteMultipleAvatarController,
      createUserPDFController,updateUserPDFController,deleteUserPDFController
     } from "./user.controller.js";
+import { adminMiddleware } from "../../core/middlewares/authMiddleware.js";
 import express from "express";
 const router = express.Router();
 
@@ -15,10 +16,10 @@ router.get("/all-super-admins", getAllSuperAdminsController);
 
 router.get("/:id", getUserByIdController);
 router.put("/:id", updateUserController);
-router.delete("/:id", deleteUserController);
+router.delete("/:id", adminMiddleware,  deleteUserController);
 
-router.post("/upload-avatar/:id",multerUpload([{ name: "profileImage", maxCount: 1 },]), createAvatarController);
-router.put("/upload-avatar/:id",multerUpload([{ name: "profileImage", maxCount: 1 },]), updateAvatarProfileController);
+router.post("/upload-avatar/:id",multerUpload([{ name: "profileImage", maxCount: 1 }]), createAvatarController);
+router.put("/upload-avatar/:id",multerUpload([{ name: "profileImage", maxCount: 1 }]), updateAvatarProfileController);
 router.delete("/upload-avatar/:id", deleteAvatarController);
 
 router.post("/upload-multiple-avatar/:id",multerUpload([{ name: "multiProfileImage", maxCount: 5 },]), createMultipleAvatarController);
