@@ -35,6 +35,9 @@ export const verifyToken = async (req, res, next) => {
 };
 
 const userMiddleware = (req, res, next) => {
+  if (!req.user) {
+    return generateResponse(res, 401, false, 'Unauthorized: User not found', null);
+  }
   const { role } = req.user;
 
   if (role !== "USER") {
@@ -45,6 +48,9 @@ const userMiddleware = (req, res, next) => {
 };
 
 const adminMiddleware = (req, res, next) => {
+  if (!req.user) {
+    return generateResponse(res, 401, false, 'Unauthorized: Admin not found', null);
+  }
   const { role } = req.user;
 
   if (role !== "ADMIN") {

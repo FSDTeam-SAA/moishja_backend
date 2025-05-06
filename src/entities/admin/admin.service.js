@@ -45,7 +45,7 @@ export const createService = async (serviceData, adminId,files) => {
   }
 };
 
-export const getAllServices = async (filters = {}) => {
+export const getAllServices = async (filters = {}, skip = 0, limit = 8) => {
   try {
     const query = { isActive: true };
 
@@ -57,20 +57,30 @@ export const getAllServices = async (filters = {}) => {
       query.adminId = filters.adminId;
     }
     if (filters.search) {
-      query.name = { $regex: filters.search, $options: 'i' };
+      query.$or = [
+        { name: { $regex: filters.search, $options: 'i' } },
+        { suburbs: { $regex: filters.search, $options: 'i' } }
+      ];
     }
 
-    const services = await Service.find(query)
-      .populate('adminId', 'fullName email')
-      .sort({ createdAt: -1 });
+    // Fetch services with pagination
+    const [services, totalData] = await Promise.all([
+      Service.find(query)
+        .skip(skip)
+        .limit(limit)
+        .populate('adminId', 'fullName email')
+        .sort({ createdAt: -1 }),
+      Service.countDocuments(query)
+    ]);
 
-    return services;
+    return [services, totalData];
   } catch (error) {
     const err = new Error('Failed to fetch services');
     err.status = 500;
     throw err;
   }
 };
+
 
 export const getServiceById = async (serviceId) => {
   try {
