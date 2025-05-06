@@ -134,8 +134,9 @@ export const updateAvatarProfile = async (id, files) => {
     const publicId = userFound.profileImage.split('/').pop().split('.')[0];
     await cloudinary.uploader.destroy(publicId);
   }
-
-  const sanitizedTitle = userFound.fullName
+  
+  const fullName = userFound.fullName || "user";
+  const sanitizedTitle = fullName
     .toLowerCase()
     .replace(/\s+/g, "-")
     .replace(/[?&=]/g, "");
