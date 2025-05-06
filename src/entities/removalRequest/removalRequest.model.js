@@ -45,11 +45,6 @@ const selectedItemSchema = new mongoose.Schema(
 
 const removalRequestSchema = new mongoose.Schema(
   {
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
-    },
     pickupInfo: {
       type: pickupInfoSchema,
       required: true
