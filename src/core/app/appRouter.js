@@ -7,6 +7,7 @@ import contactRoutes from '../../entities/contact/contact.routes.js';
 import fastRemovalRoutes from '../../entities/fastRemoval/fastRemoval.routes.js';
 import houseVisitRoutes from '../../entities/houseVisit/houseVisit.routes.js'
 import removalRequestRoutes from '../../entities/removalRequest/removalRequest.routes.js'
+import newsletterSubscriptionRoutes from '../../entities/newsletterSubscription/newsletterSubscription.routes.js'
 
 
 const router = express.Router();
@@ -17,8 +18,9 @@ router.use('/v1/auth', authRoutes);
 router.use('/v1/user', userRoutes);
 router.use('/v1/admin', adminRoutes);
 router.use('/v1/contact', contactRoutes)
-router.use('/v1/houseVisit',houseVisitRoutes )
-router.use('/v1/fastRemoval',fastRemovalRoutes)
+router.use('/v1/houseVisit', houseVisitRoutes)
+router.use('/v1/fastRemoval', fastRemovalRoutes)
 router.use('/v1/removalRequest', removalRequestRoutes)
+router.use('/v1/newsletterSubscription', newsletterSubscriptionRoutes)
 
 export default router;

@@ -4,3 +4,5 @@ import { createNewsletterSubscription } from "./newsletterSubscription.controlle
 const router = express.Router();
 
 router.post("/create", createNewsletterSubscription);
+
+export default router;
