@@ -1,41 +1,57 @@
 import jwt from 'jsonwebtoken';
 import { accessTokenSecrete } from '../../core/config/config.js';
 import RoleType from '../../lib/types.js';
+import { generateResponse } from '../../lib/responseFormate.js';
+import User from '../../entities/auth/auth.model.js';
 
-const userMiddleware = (req, res, next) => {
+export const verifyToken = async (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
-  if (!token) return res.status(401).json({ message: 'No token, auth denied' });
+  if (!token) generateResponse(res, 401, false, 'No token, auth denied', null);
 
   try {
     const decoded = jwt.verify(token, accessTokenSecrete);
-    req.user = decoded;
+    const user = await User.findById(decoded._id).select('-password -createdAt -updatedAt -__v');
+    req.user = user;
+    next();
+  }
 
-    if (req.user.role !== RoleType.USER) {
-      return res.status(403).json({ message: 'User access only' });
+  catch (err) {
+    if (err.name === "TokenExpiredError") {
+      generateResponse(res, 401, false, 'Token expired', null);
     }
 
-    next();
-  } catch (err) {
-    res.status(401).json({ message: 'Token is not valid' });
+    else if (err.name === "JsonWebTokenError") {
+      generateResponse(res, 401, false, 'Token is not valid', null);
+    }
+
+    else if (err.name === "NotBeforeError") {
+      generateResponse(res, 401, false, 'Token not active', null);
+    }
+
+    else {
+      next(err)
+    }
   }
 };
 
-const adminMiddleware = (req, res, next) => {
-  const token = req.headers.authorization?.split(' ')[1];
-  if (!token) return res.status(401).json({ message: 'No token, auth denied' });
+const userMiddleware = (req, res, next) => {
+  const { role } = req.user;
 
-  try {
-    const decoded = jwt.verify(token, accessTokenSecrete);
-    req.user = decoded;
-
-    if (req.user.role !== RoleType.ADMIN) {
-      return res.status(403).json({ message: 'Admin access only' });
-    }
-
-    next();
-  } catch (err) {
-    res.status(401).json({ message: 'Token is not valid' });
+  if (role !== "USER") {
+    generateResponse(res, 403, false, 'User access only', null);
   }
+
+  next();
+};
+
+const adminMiddleware = (req, res, next) => {
+  const { role } = req.user;
+
+  if (role !== "ADMIN") {
+    generateResponse(res, 403, false, 'Admin access only', null);
+  }
+
+  next();
 };
 
 const sellerMiddleware = (req, res, next) => {
@@ -56,23 +72,6 @@ const sellerMiddleware = (req, res, next) => {
   }
 };
 
-const adminSellerMiddleware = (req, res, next) => {
-  const token = req.headers.authorization?.split(' ')[1];
-  if (!token) return res.status(401).json({ message: 'No token, auth denied' });
-
-  try {
-    const decoded = jwt.verify(token, accessTokenSecrete);
-    req.user = decoded;
-
-    if (req.user.role !== RoleType.ADMIN && req.user.role !== RoleType.SELLER) {
-      return res.status(403).json({ message: 'Admin or Seller access only' });
-    }
-
-    next();
-  } catch (err) {
-    res.status(401).json({ message: 'Token is not valid' });
-  }
-};
 
 const userAdminSellerMiddleware = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
@@ -97,6 +96,5 @@ export {
   userMiddleware,
   adminMiddleware,
   sellerMiddleware,
-  adminSellerMiddleware,
   userAdminSellerMiddleware,
 };
