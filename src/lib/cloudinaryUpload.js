@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
+// import { unlink } from "fs/promises";
 import { cloudinaryApiKey, cloudinaryCloudName, cloudinarySecret } from "../core/config/config.js";
 
 cloudinary.config({
@@ -24,3 +25,5 @@ export const cloudinaryUpload = async (filePath, public_id, folder) => {
     return "file upload failed";
   }
 };
+
+export default cloudinary
