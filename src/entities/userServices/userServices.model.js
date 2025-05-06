@@ -1,14 +1,12 @@
 import mongoose from 'mongoose';
 
-const reviewSchema = new mongoose.Schema(
+const userServicesSchema = new mongoose.Schema(
     {
         userId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
-            required: true,
+            required: true
         },
-        review: { type: Number, required: true, min: 0, max: 5 },
-        comment: { type: String, default: '', trim: true },
 
         serviceType: {
             type: String,
@@ -23,5 +21,5 @@ const reviewSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-const Review = mongoose.model('Review', reviewSchema);
-export default Review;
+const UserServices = mongoose.model('UserServices', userServicesSchema);
+export default UserServices;
