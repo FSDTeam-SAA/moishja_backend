@@ -50,7 +50,6 @@ const removalRequestSchema = new mongoose.Schema(
       ref: 'User',
       required: true
     },
-
     pickupInfo: {
       type: pickupInfoSchema,
       required: true
