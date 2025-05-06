@@ -1,6 +1,6 @@
 import express from 'express';
 import { createHouseVisitController, deleteHouseVisitController, getAllHouseVisitsController, getHouseVisitByIdController, updateHouseVisitController } from './houseVisit.Controller.js';
-import { userAdminSellerMiddleware} from '../../core/middlewares/authMiddleware.js';
+import { userAdminSellerMiddleware, userMiddleware} from '../../core/middlewares/authMiddleware.js';
 
 const router = express.Router();
 
