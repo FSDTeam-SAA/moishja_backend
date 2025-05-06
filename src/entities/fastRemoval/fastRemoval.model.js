@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const fastRemovalRequestSchema = new mongoose.Schema(
+const FastRemovalSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -37,12 +37,17 @@ const fastRemovalRequestSchema = new mongoose.Schema(
       required: true,
       trim: true
     },
-    suburbs: {
+    currentSuburbs: {
       type: String,
       required: true,
       trim: true
     },
     movingCity: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    movingSuburbs: {
       type: String,
       required: true,
       trim: true
@@ -56,20 +61,35 @@ const fastRemovalRequestSchema = new mongoose.Schema(
       type: Date,
       required: true
     },
-    pickupInfo: {
-      packing: { type: Boolean, default: false },
-      cleaning: { type: Boolean, default: false }
+    needPacking: {
+      type: String,
+      enum: ['yes', 'no'],
+      required: true
     },
-
-    deliveryInfo: {
-      unpacking: { type: Boolean, default: false },
-      cleaning: { type: Boolean, default: false },
-      storage: { type: Boolean, default: false }
+    needPickupCleaning: {
+      type: String,
+      enum: ['yes', 'no'],
+      required: true
+    },
+    needUnpacking: {
+      type: String,
+      enum: ['yes', 'no'],
+      required: true
+    },
+    needDeliveryCleaning: {
+      type: String,
+      enum: ['yes', 'no'],
+      required: true
+    },
+    needStorage: {
+      type: String,
+      enum: ['yes', 'no'],
+      required: true
     },
     comments: {
       type: String,
-      maxLength: 1000,
-      trim: true
+      trim: true,
+      maxLength: 1000
     },
     status: {
       type: String,
@@ -80,6 +100,6 @@ const fastRemovalRequestSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const RemovalRequest = mongoose.model('RemovalRequest', fastRemovalRequestSchema);
+const FastRemoval = mongoose.model('FreeFastRemoval', FastRemovalSchema);
 
-export default RemovalRequest;
+export default FastRemoval;

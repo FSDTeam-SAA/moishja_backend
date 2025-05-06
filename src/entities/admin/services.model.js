@@ -33,6 +33,10 @@ const serviceSchema = new mongoose.Schema(
       },
       default: 'other'
     },
+    suburbs: {
+      type: [String],
+      required: true
+    },
     photos: {
       type: [String],
       default: []
