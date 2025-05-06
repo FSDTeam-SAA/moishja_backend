@@ -8,7 +8,7 @@ export const createReviewService = async (body) => {
     return
 }
 
-export const getAllReviewsService = async () => {
+export const getAllReviewsService = async (page, limit, skip) => {
 
     const uniqueReviews = await Review.aggregate([
         {
@@ -19,8 +19,6 @@ export const getAllReviewsService = async () => {
                 _id: "$userId",
                 review: { $first: "$review" },
                 comment: { $first: "$comment" },
-                serviceType: { $first: "$serviceType" },
-                serviceId: { $first: "$serviceId" },
                 createdAt: { $first: "$createdAt" },
             }
         },
@@ -38,20 +36,26 @@ export const getAllReviewsService = async () => {
         {
             $project: {
                 _id: 0,
-                userId: "$_id",
                 review: 1,
                 comment: 1,
-                serviceType: 1,
-                serviceId: 1,
                 createdAt: 1,
                 user: {
                     _id: "$user._id",
-                    name: "$user.name",
-                    email: "$user.email"
+                    firstName: "$user.firstName",
+                    lastName: "$user.lastName",
+                    profileImage: "$user.profileImage",
                 }
             }
         }
     ]);
 
-    return uniqueReviews;
+    return {
+        data: uniqueReviews.slice(skip, skip + limit),
+        pagination: {
+            currentPage: page,
+            totalPages: Math.ceil(uniqueReviews.length / limit),
+            totalItems: uniqueReviews.length,
+            itemsPerPage: limit
+        }
+    }
 }

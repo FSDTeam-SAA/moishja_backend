@@ -16,9 +16,16 @@ export const createReview = async (req, res, next) => {
 }
 
 export const getAllReviews = async (req, res, next) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
     try {
-        const data = await getAllReviewsService();
-        generateResponse(res, 200, true, 'Reviews fetched successfully', data);
+        const {data, pagination} = await getAllReviewsService(page, limit, skip);
+        return res.status(200).json({
+            success: true,
+            data,
+            pagination
+        });
     }
 
     catch (error) {
