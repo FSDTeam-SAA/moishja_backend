@@ -45,9 +45,6 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: ''
     },
-
-    hasActiveSubscription: { type: Boolean, default: false },
-    subscriptionExpireDate: { type: Date, default: null },
   },
   { timestamps: true }
 );
