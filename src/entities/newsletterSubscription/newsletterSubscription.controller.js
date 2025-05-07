@@ -1,5 +1,5 @@
 import { generateResponse } from "../../lib/responseFormate.js";
-import { createNewsletterSubscriptionService } from "./newsletterSubscription.service.js";
+import { createNewsletterSubscriptionService, getAllNewsletterSubscriptionService } from "./newsletterSubscription.service.js";
 
 export const createNewsletterSubscription = async (req, res, next) => {
     const { email } = req.body;
@@ -16,5 +16,24 @@ export const createNewsletterSubscription = async (req, res, next) => {
         else {
             next(error);
         }
+    }
+}
+
+export const getAllNewsletterSubscription = async (req, res, next) => {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+    try {
+        const {data, pagination} = await getAllNewsletterSubscriptionService(page, limit, skip);
+        return res.status(200).json({
+            success: true,
+            message: 'Newsletter subscriptions fetched successfully',
+            data,
+            pagination
+        });
+    }
+
+    catch (error) {
+        next(error);
     }
 }
