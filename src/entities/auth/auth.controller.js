@@ -179,14 +179,16 @@ export const resetPassword = async (req, res, next) => {
 export const updatePassword = async (req, res, next) => {
    // Extracted from token by auth middleware
 
-  const {email, password, newPassword } = req.body;
+  const {password, newPassword } = req.body;
+  const id =req.params.id
   
   try {
     if (!password || !newPassword) {
       return generateResponse(res, 400, false, 'Current and new passwords are required', null);
     }
 
-    const data = await updatePasswordService({ email, password, newPassword });
+    const data = await updatePasswordService({ id
+      , password, newPassword });
 
     generateResponse(res, 200, true, 'Password updated successfully', data);
   }

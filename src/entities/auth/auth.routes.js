@@ -21,5 +21,5 @@ router.post('/forget-password', forgetPassword);
 router.post('/verify-code', verifyCode);
 router.post('/reset-password', resetPassword);
 router.post('/logout',userAdminSellerMiddleware, logoutUser);
-router.put('/update-password', updatePassword);
+router.put('/update-password/:id', updatePassword);
 export default router;

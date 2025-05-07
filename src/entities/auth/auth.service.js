@@ -131,10 +131,10 @@ export const resetPasswordService = async ({ email, newPassword }) => {
   return;
 };
 
-export const updatePasswordService = async ({ email, password, newPassword }) => {
-  if (!email || !password || !newPassword) throw new Error('Email, current password, and new password are required');
+export const updatePasswordService = async ({ id, password, newPassword }) => {
+  if (!id || !password || !newPassword) throw new Error('Email, current password, and new password are required');
 
-  const user = await User.findOne({ email }).select('+password');
+  const user = await User.findById(id).select('+password');
   if (!user) throw new Error('User not found');
 
   const isMatch = await user.comparePassword(user._id, password);
