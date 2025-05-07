@@ -2,7 +2,7 @@ import RemovalRequest from '../removalRequest/removalRequest.model.js';
 import HouseVisit from '../houseVisit/houseVisit.model.js';
 import FastRemoval from '../fastRemoval/fastRemoval.model.js';
 
-export const getAllUserServicesService = async (userId) => {
+export const getAllUserServicesService = async (userId, page, skip, limit) => {
     const [removalRequests, houseVisits, fastRemovals] = await Promise.all([
         RemovalRequest.find({ userId }),
         HouseVisit.find({ userId }),
@@ -38,5 +38,13 @@ export const getAllUserServicesService = async (userId) => {
         ...formattedRemovalRequests,
     ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-    return mergedServices;
+    return {
+        data: mergedServices.slice(skip, skip + limit),
+        pagination: {
+            currentPage: page,
+            totalPages: Math.ceil(mergedServices.length / limit),
+            totalItems: mergedServices.length,
+            itemsPerPage: limit
+        },
+    };
 }
