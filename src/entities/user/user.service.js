@@ -62,6 +62,7 @@ export const getUserById = async (userId) => {
 
 // Update user
 export const updateUser = async ({ id, ...updateData }) => {
+  console.log(updateData);
   const updatedUser = await User.findByIdAndUpdate(id, updateData, {
     new: true,
     runValidators: true,
