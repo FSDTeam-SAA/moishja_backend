@@ -130,3 +130,18 @@ export const resetPasswordService = async ({ email, newPassword }) => {
 
   return;
 };
+
+export const updatePasswordService = async ({ email, password, newPassword }) => {
+  if (!email || !password || !newPassword) throw new Error('Email, current password, and new password are required');
+
+  const user = await User.findOne({ email }).select('+password');
+  if (!user) throw new Error('User not found');
+
+  const isMatch = await user.comparePassword(user._id, password);
+  if (!isMatch) throw new Error('Incorrect current password');
+
+  user.password = newPassword;
+  await user.save(); // pre-save hook will hash it
+
+  return { message: 'Password updated successfully' };
+};

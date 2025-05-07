@@ -7,6 +7,7 @@ import {
   verifyCode,
   resetPassword,
   logoutUser,
+  updatePassword,
   
 } from './auth.controller.js';
 import { userAdminSellerMiddleware } from '../../core/middlewares/authMiddleware.js';
@@ -20,5 +21,5 @@ router.post('/forget-password', forgetPassword);
 router.post('/verify-code', verifyCode);
 router.post('/reset-password', resetPassword);
 router.post('/logout',userAdminSellerMiddleware, logoutUser);
-
+router.put('/update-password', updatePassword);
 export default router;

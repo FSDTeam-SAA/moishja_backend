@@ -6,7 +6,8 @@ import {
   refreshAccessTokenService,
   forgetPasswordService,
   verifyCodeService,
-  resetPasswordService
+  resetPasswordService,
+  updatePasswordService
 } from './auth.service.js';
 
 export const registerUser = async (req, res, next) => {
@@ -173,3 +174,34 @@ export const resetPassword = async (req, res, next) => {
   }
 };
 
+
+
+export const updatePassword = async (req, res, next) => {
+   // Extracted from token by auth middleware
+
+  const {email, password, newPassword } = req.body;
+  
+  try {
+    if (!password || !newPassword) {
+      return generateResponse(res, 400, false, 'Current and new passwords are required', null);
+    }
+
+    const data = await updatePasswordService({ email, password, newPassword });
+
+    generateResponse(res, 200, true, 'Password updated successfully', data);
+  }
+
+  catch (error) {
+    if (error.message === 'User not found') {
+      generateResponse(res, 404, false, 'User not found', null);
+    }
+
+    else if (error.message === 'Incorrect current password') {
+      generateResponse(res, 403, false, 'Incorrect current password', null);
+    }
+
+    else {
+      next(error);
+    }
+  }
+};
