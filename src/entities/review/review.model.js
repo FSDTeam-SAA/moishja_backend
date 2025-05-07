@@ -18,7 +18,13 @@ const reviewSchema = new mongoose.Schema(
         serviceId: {
             type: mongoose.Schema.Types.ObjectId,
             required: true
-        }
+        },
+
+        status: {
+            type: String,
+            enum: ['pending', 'approved'],
+            default: 'pending',
+        },
     },
     { timestamps: true }
 );
