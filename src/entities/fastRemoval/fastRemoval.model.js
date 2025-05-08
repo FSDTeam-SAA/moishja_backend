@@ -93,7 +93,7 @@ const FastRemovalSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['pending', 'approved', 'in-progress', 'completed', 'rejected'],
+      enum: ['pending', 'approved', 'in-progress', 'completed', 'cancelled'],
       default: 'pending'
     }
   },
