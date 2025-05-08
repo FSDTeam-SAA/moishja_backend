@@ -61,7 +61,8 @@ export const updateService = async (req, res) => {
       req.params.id,
       req.body,
       req.user._id,
-      req.user.role
+      req.user.role,
+      req.files
     );
     generateResponse(res, 200, true, 'Service updated successfully', service);
   } catch (error) {

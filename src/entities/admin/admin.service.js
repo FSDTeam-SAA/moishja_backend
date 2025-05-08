@@ -101,8 +101,27 @@ export const getServiceById = async (serviceId) => {
   }
 };
 
-export const updateService = async (serviceId, updateData, adminId, adminRole) => {
+export const updateService = async (serviceId, updateData, adminId, adminRole, files) => {
   try {
+    const uploadedPhotos = [];
+
+    if (files && files.photos && files.photos.length > 0) {
+      for (const photo of files.photos) {
+        const sanitizedTitle = (updateData.name || "service")
+          .toLowerCase()
+          .replace(/\s+/g, "-")
+          .replace(/[?&=]/g, "");
+
+        const result = await cloudinaryUpload(photo.path, sanitizedTitle, "services");
+
+        if (typeof result === "string" || !result?.secure_url) {
+          throw new Error("Cloudinary upload failed");
+        }
+
+        uploadedPhotos.push(result.secure_url);
+      }
+    }
+
     const service = await Service.findById(serviceId);
     if (!service) {
       const error = new Error('Service not found');
@@ -117,7 +136,7 @@ export const updateService = async (serviceId, updateData, adminId, adminRole) =
     }
 
     // Only update allowed fields
-    const allowedUpdates = ['name', 'description', 'price', 'duration', 'category', 'photos', 'isActive'];
+    const allowedUpdates = ['name', 'description', 'price', 'duration', 'category', 'isActive'];
     const updates = Object.keys(updateData)
       .filter(key => allowedUpdates.includes(key))
       .reduce((obj, key) => {
@@ -125,9 +144,14 @@ export const updateService = async (serviceId, updateData, adminId, adminRole) =
         return obj;
       }, {});
 
+    // Add photos if any new ones were uploaded
+    if (uploadedPhotos.length > 0) {
+      updates.photos = uploadedPhotos;
+    }
+
     Object.assign(service, updates);
     await service.save();
-    return service;
+    return service; 
   } catch (error) {
     if (error.status) throw error;
     if (error.name === 'ValidationError') {
@@ -141,6 +165,7 @@ export const updateService = async (serviceId, updateData, adminId, adminRole) =
     throw err;
   }
 };
+
 
 export const deleteService = async (serviceId, adminId, adminRole) => {
   try {
