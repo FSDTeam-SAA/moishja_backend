@@ -136,7 +136,7 @@ export const updateService = async (serviceId, updateData, adminId, adminRole, f
     }
 
     // Only update allowed fields
-    const allowedUpdates = ['name', 'description', 'price', 'duration', 'category', 'isActive'];
+    const allowedUpdates = ['name', 'description', 'price', 'duration', 'category', 'isActive','suburbs'];
     const updates = Object.keys(updateData)
       .filter(key => allowedUpdates.includes(key))
       .reduce((obj, key) => {
@@ -150,6 +150,13 @@ export const updateService = async (serviceId, updateData, adminId, adminRole, f
     }
 
     Object.assign(service, updates);
+    if (updateData.suburbs) {
+      const newSuburbs = Array.isArray(updateData.suburbs)
+        ? updateData.suburbs
+        : [updateData.suburbs];
+      service.suburbs = Array.from(new Set([...service.suburbs, ...newSuburbs]));
+    }
+    
     await service.save();
     return service; 
   } catch (error) {
