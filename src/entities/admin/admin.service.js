@@ -151,7 +151,7 @@ export const updateService = async (serviceId, updateData, adminId, adminRole, f
 
     Object.assign(service, updates);
     await service.save();
-    return service;
+    return service; 
   } catch (error) {
     if (error.status) throw error;
     if (error.name === 'ValidationError') {
