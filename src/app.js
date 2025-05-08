@@ -22,12 +22,10 @@ const app = express();
 // Set up security middleware
 app.use(helmet());
 app.use(
-    cors({
-      origin: true,
-      credentials: true,
-      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    })
-  );
+  cors({
+    origin: "*"
+  })
+);
 app.use(xssClean());
 app.use(mongoSanitize());
 
