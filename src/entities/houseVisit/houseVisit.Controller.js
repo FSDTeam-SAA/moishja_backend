@@ -32,6 +32,17 @@ export const getHouseVisitByIdController = async (req, res) => {
     generateResponse(res, 500, false, error.message);
   }
 };
+export const getHouseVisitRequestByUserIdController = async (req, res, next) => {
+  try {
+      const houseVisit = await houseVisitService.houseVisitRequestByUserIdService(req.user._id);
+      if (!houseVisit) {
+          return generateResponse(res, 404, false, 'Removal request not found', null);
+      }
+      generateResponse(res, 200, true, 'Removal request fetched successfully', houseVisit);
+  } catch (error) {
+      next(error);
+  }
+}
 
 export const updateHouseVisitController = async (req, res) => {
   try {

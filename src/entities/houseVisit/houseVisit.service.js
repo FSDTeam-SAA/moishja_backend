@@ -26,3 +26,8 @@ export const updateHouseVisit = async (id, updateData) => {
 export const deleteHouseVisit = async (id) => {
   return await HouseVisit.findByIdAndDelete(id);
 };
+export const houseVisitRequestByUserIdService = async (userId) => {
+  const houseVisit = await HouseVisit.find({ userId: userId })
+  .populate('userId', 'firstName lastName email');
+  return houseVisit;
+}
