@@ -10,10 +10,13 @@ export const createFastRemovalRequestService = async (body, userId) => {
     return fastRemovalRequest;
 }
 export const getAllFastRemovalRequestsService = async () => {
-    return await FastRemovalRequest.find().populate('userId', 'serviceName', 'firstName lastName email');
+    return await FastRemovalRequest.find()
+        .populate('serviceName', 'name')
+        .populate('userId', 'firstName lastName email')
 }
 export const getFastRemovalRequestByIdService = async (id) => {
-    return await FastRemovalRequest.findById(id).populate('userId', 'serviceName', 'firstName lastName email');
+    return await FastRemovalRequest.findById(id).populate('serviceName', 'name')
+        .populate('userId', 'firstName lastName email');
 }
 export const updateFastRemovalRequestService = async (id, updateData) => {
     return await FastRemovalRequest.findByIdAndUpdate(id, updateData, { new: true });
@@ -22,5 +25,6 @@ export const deleteFastRemovalRequestService = async (id) => {
     return await FastRemovalRequest.findByIdAndDelete(id);
 }
 export const getFastRemovalRequestByUserIdService = async (userId) => {
-    return await FastRemovalRequest.find({ userId: userId }).populate('userId', 'serviceName', 'firstName lastName email');
+    return await FastRemovalRequest.find({ userId: userId }).populate('serviceName', 'name')
+        .populate('userId', 'firstName lastName email');
 }
