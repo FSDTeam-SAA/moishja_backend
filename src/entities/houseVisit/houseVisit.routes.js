@@ -1,5 +1,5 @@
 import express from 'express';
-import { createHouseVisitController, deleteHouseVisitController, getAllHouseVisitsController, getHouseVisitByIdController, getHouseVisitRequestByUserIdController, getHouseVisitRequestByUserIdController, houseVisitStatController, updateHouseVisitController } from './houseVisit.Controller.js';
+import { createHouseVisitController, deleteHouseVisitController, getAllHouseVisitsController, getHouseVisitByIdController, getHouseVisitRequestByUserIdController, houseVisitStatController, updateHouseVisitController } from './houseVisit.Controller.js';
 import { userAdminSellerMiddleware, userMiddleware} from '../../core/middlewares/authMiddleware.js';
 
 const router = express.Router();
