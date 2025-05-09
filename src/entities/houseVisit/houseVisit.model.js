@@ -2,7 +2,11 @@ import mongoose from 'mongoose';
 
 const houseVisitSchema = new mongoose.Schema(
   {
-     serviceName: { type: mongoose.Schema.Types.ObjectId, ref: 'Service',required: true },
+    erviceName: { 
+      type: String, 
+      required: true, 
+      default: 'House Visit Request' // Hardcoding the value as 'Free Fast Removal'
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

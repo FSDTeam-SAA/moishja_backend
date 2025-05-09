@@ -11,11 +11,11 @@ export const createFastRemovalRequestService = async (body, userId) => {
 }
 export const getAllFastRemovalRequestsService = async () => {
     return await FastRemovalRequest.find()
-        .populate('serviceName', 'name')
+
         .populate('userId', 'firstName lastName email')
 }
 export const getFastRemovalRequestByIdService = async (id) => {
-    return await FastRemovalRequest.findById(id).populate('serviceName', 'name')
+    return await FastRemovalRequest.findById(id)
         .populate('userId', 'firstName lastName email');
 }
 export const updateFastRemovalRequestService = async (id, updateData) => {
@@ -25,6 +25,6 @@ export const deleteFastRemovalRequestService = async (id) => {
     return await FastRemovalRequest.findByIdAndDelete(id);
 }
 export const getFastRemovalRequestByUserIdService = async (userId) => {
-    return await FastRemovalRequest.find({ userId: userId }).populate('serviceName', 'name')
+    return await FastRemovalRequest.find({ userId: userId })
         .populate('userId', 'firstName lastName email');
 }
