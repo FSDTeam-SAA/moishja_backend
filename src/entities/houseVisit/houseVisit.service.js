@@ -10,12 +10,12 @@ export const requestHouseVisit = async (data, userId) => {
 };
 
 export const getAllHouseVisits = async () => {
-  return await HouseVisit.find().populate('serviceName', 'name')
+  return await HouseVisit.find()
   .populate('userId', 'firstName lastName email');
 };
 
 export const getHouseVisitById = async (id) => {
-  return await HouseVisit.findById(id).populate('serviceName', 'name')
+  return await HouseVisit.findById(id)
   .populate('userId', 'firstName lastName email');
 };
 
