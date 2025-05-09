@@ -7,23 +7,23 @@ export const createRemovalRequestService = async (body) => {
     return;
 }
 
-export const getAllRemovalRequestsService = async ()=>{
-    const removalRequests = await RemovalRequest.find().populate('userId','firstName lastName email ').sort({ createdAt: -1 });
+export const getAllRemovalRequestsService = async () => {
+    const removalRequests = await RemovalRequest.find().populate('userId', 'serviceName', 'firstName lastName email ').sort({ createdAt: -1 });
     return removalRequests;
 }
 export const getRemovalRequestByIdService = async (id) => {
-    const removalRequest = await RemovalRequest.findById(id).populate('userId','firstName lastName email ');
+    const removalRequest = await RemovalRequest.findById(id).populate('userId', 'serviceName', 'firstName lastName email ');
     return removalRequest;
 }
 export const updateRemovalRequestService = async (id, updateData) => {
     const removalRequest = await RemovalRequest.findByIdAndUpdate(id, updateData, { new: true });
-    return removalRequest;  
+    return removalRequest;
 }
 export const deleteRemovalRequestService = async (id) => {
     const removalRequest = await RemovalRequest.findByIdAndDelete(id);
     return removalRequest;
 }
 export const getRemovalRequestByUserIdService = async (userId) => {
-    const removalRequest = await RemovalRequest.find({ userId: userId }).populate('userId','firstName lastName email ');
-    return removalRequest;      
+    const removalRequest = await RemovalRequest.find({ userId: userId }).populate('userId', 'serviceName', 'firstName lastName email ');
+    return removalRequest;
 }

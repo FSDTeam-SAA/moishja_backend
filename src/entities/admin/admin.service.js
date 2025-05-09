@@ -3,7 +3,7 @@ import Service from "./services.model.js";
 
 
 
-export const createService = async (serviceData, adminId,files) => {
+export const createService = async (serviceData, adminId, files) => {
   try {
     const uploadedPhotos = [];
 
@@ -29,7 +29,7 @@ export const createService = async (serviceData, adminId,files) => {
       photos: uploadedPhotos,
       adminId,
     });
-  
+
     console.log(serviceData, adminId);
     await service.save();
     return service;
@@ -136,7 +136,7 @@ export const updateService = async (serviceId, updateData, adminId, adminRole, f
     }
 
     // Only update allowed fields
-    const allowedUpdates = ['name', 'description', 'price', 'duration', 'category', 'isActive','suburbs'];
+    const allowedUpdates = ['name', 'description', 'price', 'duration', 'category', 'isActive', 'suburbs'];
     const updates = Object.keys(updateData)
       .filter(key => allowedUpdates.includes(key))
       .reduce((obj, key) => {
@@ -156,9 +156,9 @@ export const updateService = async (serviceId, updateData, adminId, adminRole, f
         : [updateData.suburbs];
       service.suburbs = Array.from(new Set([...service.suburbs, ...newSuburbs]));
     }
-    
+
     await service.save();
-    return service; 
+    return service;
   } catch (error) {
     if (error.status) throw error;
     if (error.name === 'ValidationError') {

@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 const houseVisitSchema = new mongoose.Schema(
   {
+    serviceName: { type: mongoose.Schema.Types.ObjectId, ref: 'Service' },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
@@ -46,7 +47,7 @@ const houseVisitSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['requested','not-visited', 'visited', 'cancelled'],
+      enum: ['requested', 'not-visited', 'visited', 'cancelled'],
       default: 'requested'
     },
   },
