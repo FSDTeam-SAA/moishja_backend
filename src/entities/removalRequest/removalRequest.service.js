@@ -8,11 +8,13 @@ export const createRemovalRequestService = async (body) => {
 }
 
 export const getAllRemovalRequestsService = async () => {
-    const removalRequests = await RemovalRequest.find().populate('userId', 'serviceName', 'firstName lastName email ').sort({ createdAt: -1 });
+    const removalRequests = await RemovalRequest.find().populate('serviceName', 'name')
+    .populate('userId', 'firstName lastName email').sort({ createdAt: -1 });
     return removalRequests;
 }
 export const getRemovalRequestByIdService = async (id) => {
-    const removalRequest = await RemovalRequest.findById(id).populate('userId', 'serviceName', 'firstName lastName email ');
+    const removalRequest = await RemovalRequest.findById(id).populate('serviceName', 'name')
+    .populate('userId', 'firstName lastName email');
     return removalRequest;
 }
 export const updateRemovalRequestService = async (id, updateData) => {
@@ -24,6 +26,7 @@ export const deleteRemovalRequestService = async (id) => {
     return removalRequest;
 }
 export const getRemovalRequestByUserIdService = async (userId) => {
-    const removalRequest = await RemovalRequest.find({ userId: userId }).populate('userId', 'serviceName', 'firstName lastName email ');
+    const removalRequest = await RemovalRequest.find({ userId: userId }).populate('serviceName', 'name')
+    .populate('userId', 'firstName lastName email');
     return removalRequest;
 }
