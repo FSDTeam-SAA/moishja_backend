@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const FastRemovalSchema = new mongoose.Schema(
   {
-    serviceName: { type: mongoose.Schema.Types.ObjectId, ref: 'Service' },
+     serviceName: { type: mongoose.Schema.Types.ObjectId, ref: 'Service',required: true },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

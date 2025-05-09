@@ -45,7 +45,7 @@ const selectedItemSchema = new mongoose.Schema(
 
 const removalRequestSchema = new mongoose.Schema(
   {
-    serviceName: { type: mongoose.Schema.Types.ObjectId, ref: 'Service' },
+    serviceName: { type: mongoose.Schema.Types.ObjectId, ref: 'Service',required: true },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
