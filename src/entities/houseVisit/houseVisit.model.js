@@ -51,7 +51,7 @@ const houseVisitSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['requested', 'not-visited', 'visited', 'cancelled'],
+      enum: ['requested', 'not-visited', 'visited', 'cancelled','completed'],
       default: 'requested'
     },
   },

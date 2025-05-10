@@ -10,6 +10,7 @@ import removalRequestRoutes from '../../entities/removalRequest/removalRequest.r
 import newsletterSubscriptionRoutes from '../../entities/newsletterSubscription/newsletterSubscription.routes.js'
 import userServicesRoutes from '../../entities/userServices/userServices.routes.js'
 import reviewsRoutes from '../../entities/review/review.routes.js'
+import { getStats } from '../../lib/statController.js';
 
 
 const router = express.Router();
@@ -26,6 +27,6 @@ router.use('/v1/removalRequest', removalRequestRoutes)
 router.use('/v1/newsletterSubscription', newsletterSubscriptionRoutes)
 router.use('/v1/userServices', userServicesRoutes)
 router.use('/v1/reviews', reviewsRoutes)
-
+router.use('/v1/stats',getStats) 
 
 export default router;
