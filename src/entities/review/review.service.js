@@ -13,6 +13,9 @@ export const getAllReviewsService = async (page, limit, skip) => {
 
     const uniqueReviews = await Review.aggregate([
         {
+            $match: { status: 'approved' } // Only approved reviews
+        },
+        {
             $sort: { createdAt: -1 } // Sort reviews so the latest comes first
         },
         {
@@ -68,7 +71,7 @@ export const getReviewsCountService = async () => {
         Review.countDocuments({ status: 'approved' }),
         Review.countDocuments({ status: 'pending' })
     ]);
-    
+
     return {
         totalReviewsCount,
         approvedReviewsCount,
