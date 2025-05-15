@@ -1,6 +1,8 @@
 import { cloudinaryUpload } from "../../lib/cloudinaryUpload.js";
 import Service from "./services.model.js";
-
+import FastRemoval from '../fastRemoval/fastRemoval.model.js';
+import HouseVisit from '../houseVisit/houseVisit.model.js';
+import RemovalRequest from '../removalRequest/removalRequest.model.js';
 
 
 export const createService = async (serviceData, adminId, files) => {
@@ -200,4 +202,49 @@ export const deleteService = async (serviceId, adminId, adminRole) => {
     err.status = 500;
     throw err;
   }
+};
+
+const aggregateStatusCounts = async (Model) => {
+  return Model.aggregate([
+    { $group: { _id: "$status", count: { $sum: 1 } } }
+  ]);
+};
+
+export const getAllServiceCounts = async () => {
+  const [fastRemovalCount, houseVisitCount, removalRequestCount] = await Promise.all([
+    FastRemoval.countDocuments(),
+    HouseVisit.countDocuments(),
+    RemovalRequest.countDocuments()
+  ]);
+
+  const totalService = fastRemovalCount + houseVisitCount + removalRequestCount;
+
+  // Status-based counts
+  const [fastStatuses, houseStatuses, removalStatuses] = await Promise.all([
+    aggregateStatusCounts(FastRemoval),
+    aggregateStatusCounts(HouseVisit),
+    aggregateStatusCounts(RemovalRequest),
+  ]);
+
+  const statusCounts = {};
+
+  const mergeStatusCounts = (arr) => {
+    arr.forEach(({ _id, count }) => {
+      if (_id) statusCounts[_id] = (statusCounts[_id] || 0) + count;
+    });
+  };
+
+  mergeStatusCounts(fastStatuses);
+  mergeStatusCounts(houseStatuses);
+  mergeStatusCounts(removalStatuses);
+
+  return {
+    totalService,
+    totals: {
+      fastRemoval: fastRemovalCount,
+      houseVisit: houseVisitCount,
+      removalRequest: removalRequestCount,
+    },
+    statusCounts
+  };
 };

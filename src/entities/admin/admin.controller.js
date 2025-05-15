@@ -82,3 +82,12 @@ export const deleteService = async (req, res) => {
     generateResponse(res, error.status || 400, false, error.message);
   }
 };
+
+export const getAllServiceCounts = async(req,res) =>{
+  try {
+    const serviceCounts = await serviceService.getAllServiceCounts();
+    generateResponse(res, 200, true, 'Service counts fetched successfully', serviceCounts);
+  } catch (error) {
+    generateResponse(res, error.status || 500, false, error.message);
+  }
+}
