@@ -82,7 +82,6 @@ export const deleteService = async (req, res) => {
     generateResponse(res, error.status || 400, false, error.message);
   }
 };
-
 export const getAllServiceCounts = async(req,res) =>{
   try {
     const serviceCounts = await serviceService.getAllServiceCounts();
