@@ -19,6 +19,8 @@ export const createService = async (req, res) => {
 
 
 export const getAllServices = async (req, res) => {
+
+  console.log(req.query.category);
   
   try {
     const filters = {
