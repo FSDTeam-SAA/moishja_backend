@@ -14,7 +14,7 @@ const router = express.Router();
 
 // Routes
 router.post('/create', verifyToken, adminMiddleware, multerUpload([{ name: "photos", maxCount: 5 },]), createService);
-router.get('/', getAllServices);
+router.get('/', verifyToken,adminMiddleware,getAllServices);
 router.get('/allServiceCounts',getAllServiceCounts)
 router.get('/:id', getServiceById);
 router.put('/:id', verifyToken, adminMiddleware, multerUpload([{ name: "photos", maxCount: 5 },]), updateService);
