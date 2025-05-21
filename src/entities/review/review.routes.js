@@ -8,6 +8,7 @@ const router = express.Router();
 router.post("/create", verifyToken, userMiddleware, createReview);
 router.get("/get-all-reviews", getAllReviews);
 
+
 //admin
 router.get("/get-reviews-count", verifyToken, adminMiddleware, getReviewsCount);
 router.get("/get-all-pending-reviews", verifyToken, adminMiddleware, getAllPendingReviews);
