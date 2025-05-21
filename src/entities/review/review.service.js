@@ -1,5 +1,6 @@
 import Review from "./review.model.js";
 
+//user
 export const createReviewService = async (body) => {
 
     const review = new Review(body);
@@ -8,9 +9,12 @@ export const createReviewService = async (body) => {
     return
 }
 
-export const getAllReviewsService = async () => {
+export const getAllReviewsService = async (page, limit, skip) => {
 
     const uniqueReviews = await Review.aggregate([
+        {
+            $match: { status: 'approved' } // Only approved reviews
+        },
         {
             $sort: { createdAt: -1 } // Sort reviews so the latest comes first
         },
@@ -19,8 +23,6 @@ export const getAllReviewsService = async () => {
                 _id: "$userId",
                 review: { $first: "$review" },
                 comment: { $first: "$comment" },
-                serviceType: { $first: "$serviceType" },
-                serviceId: { $first: "$serviceId" },
                 createdAt: { $first: "$createdAt" },
             }
         },
@@ -38,20 +40,95 @@ export const getAllReviewsService = async () => {
         {
             $project: {
                 _id: 0,
-                userId: "$_id",
                 review: 1,
                 comment: 1,
-                serviceType: 1,
-                serviceId: 1,
                 createdAt: 1,
                 user: {
                     _id: "$user._id",
-                    name: "$user.name",
-                    email: "$user.email"
+                    firstName: "$user.firstName",
+                    lastName: "$user.lastName",
+                    profileImage: "$user.profileImage",
                 }
             }
         }
     ]);
 
-    return uniqueReviews;
+    return {
+        data: uniqueReviews.slice(skip, skip + limit),
+        pagination: {
+            currentPage: page,
+            totalPages: Math.ceil(uniqueReviews.length / limit),
+            totalItems: uniqueReviews.length,
+            itemsPerPage: limit
+        }
+    }
+}
+
+//admin
+export const getReviewsCountService = async () => {
+    const [totalReviewsCount, approvedReviewsCount, pendingReviewsCount] = await Promise.all([
+        Review.countDocuments({}),
+        Review.countDocuments({ status: 'approved' }),
+        Review.countDocuments({ status: 'pending' })
+    ]);
+
+    return {
+        totalReviewsCount,
+        approvedReviewsCount,
+        pendingReviewsCount
+    };
+}
+
+export const getAllPendingReviewsService = async (search, page, limit, skip) => {
+
+    const reviews = (
+        await Review
+            .find({ status: 'pending' })
+            .populate('userId', 'firstName lastName profileImage')
+            .select('userId review comment createdAt status')
+            .sort({ createdAt: -1 })
+            .lean()
+    )
+
+    let filteredReviews = reviews.filter((review) => {
+
+        const comment = review.comment.toLowerCase();
+        const firstName = review.userId.firstName.toLowerCase();
+        const lastName = review.userId.lastName.toLowerCase();
+
+        const matchedSearch = search ? comment.includes(search) || firstName.includes(search) || lastName.includes(search) : true;
+
+        return matchedSearch;
+    })
+
+    const totalItems = filteredReviews.length;
+    const totalPages = Math.ceil(totalItems / limit);
+
+    const paginatedReviews = filteredReviews.slice(skip, skip + limit);
+
+    return {
+        data: paginatedReviews,
+        pagination: {
+            currentPage: page,
+            totalPages,
+            totalItems,
+            itemsPerPage: limit
+        }
+    }
+}
+
+export const approveReviewService = async (reviewId) => {
+
+    const review = await Review.findById(reviewId);
+    if (!review) throw new Error('Review not found');
+
+    review.status = 'approved';
+    await review.save();
+    return;
+}
+
+export const declineReviewService = async (reviewId) => {
+    const review = await Review.findByIdAndDelete(reviewId);
+    if (!review) throw new Error('Review not found');
+    return;
 }

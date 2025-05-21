@@ -2,6 +2,11 @@ import mongoose from 'mongoose';
 
 const FastRemovalSchema = new mongoose.Schema(
   {
+    serviceName: { 
+      type: String, 
+      required: true, 
+      default: 'Free Fast Removal' // Hardcoding the value as 'Free Fast Removal'
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
@@ -93,7 +98,7 @@ const FastRemovalSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['pending', 'approved', 'in-progress', 'completed', 'rejected'],
+      enum: ['pending', 'approved', 'in-progress', 'completed', 'cancelled'],
       default: 'pending'
     }
   },

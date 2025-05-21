@@ -2,44 +2,49 @@ import RemovalRequest from '../removalRequest/removalRequest.model.js';
 import HouseVisit from '../houseVisit/houseVisit.model.js';
 import FastRemoval from '../fastRemoval/fastRemoval.model.js';
 
-export const getAllUserServicesService = async (userId) => {
+export const getAllUserServicesService = async (userId, page, skip, limit) => {
     const [removalRequests, houseVisits, fastRemovals] = await Promise.all([
         RemovalRequest.find({ userId }),
         HouseVisit.find({ userId }),
         FastRemoval.find({ userId }),
-      ]);
-  
-      // Format each service type
-      const formattedFastRemovals = fastRemovals.map(item => ({
-        serviceType: 'Free & Fast Removal',
+    ]);
+
+    // Format each service type
+    const formattedFastRemovals = fastRemovals.map(item => ({
+        serviceName: 'Free & Fast Removal',
         status: item.status,
-        date: item.date || item.createdAt,
-        address: item.address,
+        date: item.createdAt,
         id: item._id,
-      }));
-  
-      const formattedHouseVisits = houseVisits.map(item => ({
-        serviceType: 'House Visit',
+    }));
+
+    const formattedHouseVisits = houseVisits.map(item => ({
+        serviceName: 'House Visit',
         status: item.status,
-        date: item.visitDate || item.createdAt,
-        address: item.address,
+        date: item.createdAt,
         id: item._id,
-      }));
-  
-      const formattedRemovalRequests = removalRequests.map(item => ({
-        serviceType: 'Removal Request',
+    }));
+
+    const formattedRemovalRequests = removalRequests.map(item => ({
+        serviceName: 'Removal Request',
         status: item.status,
-        date: item.requestedDate || item.createdAt,
-        address: item.pickupAddress,
+        date: item.createdAt,
         id: item._id,
-      }));
-  
-      // Combine and sort by date (latest first)
-      const mergedServices = [
+    }));
+
+    // Combine and sort by date (latest first)
+    const mergedServices = [
         ...formattedFastRemovals,
         ...formattedHouseVisits,
         ...formattedRemovalRequests,
-      ].sort((a, b) => new Date(b.date) - new Date(a.date));
+    ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-    return mergedServices;
+    return {
+        data: mergedServices.slice(skip, skip + limit),
+        pagination: {
+            currentPage: page,
+            totalPages: Math.ceil(mergedServices.length / limit),
+            totalItems: mergedServices.length,
+            itemsPerPage: limit
+        },
+    };
 }

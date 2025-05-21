@@ -19,6 +19,8 @@ export const createService = async (req, res) => {
 
 
 export const getAllServices = async (req, res) => {
+
+  console.log(req.query.category);
   
   try {
     const filters = {
@@ -61,7 +63,8 @@ export const updateService = async (req, res) => {
       req.params.id,
       req.body,
       req.user._id,
-      req.user.role
+      req.user.role,
+      req.files
     );
     generateResponse(res, 200, true, 'Service updated successfully', service);
   } catch (error) {
@@ -81,3 +84,11 @@ export const deleteService = async (req, res) => {
     generateResponse(res, error.status || 400, false, error.message);
   }
 };
+export const getAllServiceCounts = async(req,res) =>{
+  try {
+    const serviceCounts = await serviceService.getAllServiceCounts();
+    generateResponse(res, 200, true, 'Service counts fetched successfully', serviceCounts);
+  } catch (error) {
+    generateResponse(res, error.status || 500, false, error.message);
+  }
+}

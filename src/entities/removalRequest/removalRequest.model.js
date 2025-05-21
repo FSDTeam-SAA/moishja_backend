@@ -45,12 +45,16 @@ const selectedItemSchema = new mongoose.Schema(
 
 const removalRequestSchema = new mongoose.Schema(
   {
+    erviceName: { 
+      type: String, 
+      required: true, 
+      default: 'Free details removal request'
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true
     },
-
     pickupInfo: {
       type: pickupInfoSchema,
       required: true
@@ -70,7 +74,7 @@ const removalRequestSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ['pending', 'approved', 'in-progress', 'completed', 'rejected'],
+      enum: ['pending', 'approved', 'in-progress', 'completed', 'cancelled'],
       default: 'pending'
     }
   },

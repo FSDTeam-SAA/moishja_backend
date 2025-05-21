@@ -2,6 +2,11 @@ import mongoose from 'mongoose';
 
 const houseVisitSchema = new mongoose.Schema(
   {
+    erviceName: { 
+      type: String, 
+      required: true, 
+      default: 'House Visit Request' // Hardcoding the value as 'Free Fast Removal'
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
@@ -46,7 +51,7 @@ const houseVisitSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['requested','not-visited', 'visited', 'cancelled'],
+      enum: ['requested', 'not-visited', 'visited', 'cancelled','completed'],
       default: 'requested'
     },
   },

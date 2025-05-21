@@ -1,9 +1,11 @@
 import { cloudinaryUpload } from "../../lib/cloudinaryUpload.js";
 import Service from "./services.model.js";
+import FastRemoval from '../fastRemoval/fastRemoval.model.js';
+import HouseVisit from '../houseVisit/houseVisit.model.js';
+import RemovalRequest from '../removalRequest/removalRequest.model.js';
 
 
-
-export const createService = async (serviceData, adminId,files) => {
+export const createService = async (serviceData, adminId, files) => {
   try {
     const uploadedPhotos = [];
 
@@ -29,7 +31,7 @@ export const createService = async (serviceData, adminId,files) => {
       photos: uploadedPhotos,
       adminId,
     });
-  
+
     console.log(serviceData, adminId);
     await service.save();
     return service;
@@ -101,8 +103,27 @@ export const getServiceById = async (serviceId) => {
   }
 };
 
-export const updateService = async (serviceId, updateData, adminId, adminRole) => {
+export const updateService = async (serviceId, updateData, adminId, adminRole, files) => {
   try {
+    const uploadedPhotos = [];
+
+    if (files && files.photos && files.photos.length > 0) {
+      for (const photo of files.photos) {
+        const sanitizedTitle = (updateData.name || "service")
+          .toLowerCase()
+          .replace(/\s+/g, "-")
+          .replace(/[?&=]/g, "");
+
+        const result = await cloudinaryUpload(photo.path, sanitizedTitle, "services");
+
+        if (typeof result === "string" || !result?.secure_url) {
+          throw new Error("Cloudinary upload failed");
+        }
+
+        uploadedPhotos.push(result.secure_url);
+      }
+    }
+
     const service = await Service.findById(serviceId);
     if (!service) {
       const error = new Error('Service not found');
@@ -117,7 +138,7 @@ export const updateService = async (serviceId, updateData, adminId, adminRole) =
     }
 
     // Only update allowed fields
-    const allowedUpdates = ['name', 'description', 'price', 'duration', 'category', 'photos', 'isActive'];
+    const allowedUpdates = ['name', 'description', 'price', 'duration', 'category', 'isActive', 'suburbs'];
     const updates = Object.keys(updateData)
       .filter(key => allowedUpdates.includes(key))
       .reduce((obj, key) => {
@@ -125,7 +146,19 @@ export const updateService = async (serviceId, updateData, adminId, adminRole) =
         return obj;
       }, {});
 
+    // Add photos if any new ones were uploaded
+    if (uploadedPhotos.length > 0) {
+      updates.photos = uploadedPhotos;
+    }
+
     Object.assign(service, updates);
+    if (updateData.suburbs) {
+      const newSuburbs = Array.isArray(updateData.suburbs)
+        ? updateData.suburbs
+        : [updateData.suburbs];
+      service.suburbs = Array.from(new Set([...service.suburbs, ...newSuburbs]));
+    }
+
     await service.save();
     return service;
   } catch (error) {
@@ -141,6 +174,7 @@ export const updateService = async (serviceId, updateData, adminId, adminRole) =
     throw err;
   }
 };
+
 
 export const deleteService = async (serviceId, adminId, adminRole) => {
   try {
@@ -168,4 +202,49 @@ export const deleteService = async (serviceId, adminId, adminRole) => {
     err.status = 500;
     throw err;
   }
+};
+
+const aggregateStatusCounts = async (Model) => {
+  return Model.aggregate([
+    { $group: { _id: "$status", count: { $sum: 1 } } }
+  ]);
+};
+
+export const getAllServiceCounts = async () => {
+  const [fastRemovalCount, houseVisitCount, removalRequestCount] = await Promise.all([
+    FastRemoval.countDocuments(),
+    HouseVisit.countDocuments(),
+    RemovalRequest.countDocuments()
+  ]);
+
+  const totalService = fastRemovalCount + houseVisitCount + removalRequestCount;
+
+  // Status-based counts
+  const [fastStatuses, houseStatuses, removalStatuses] = await Promise.all([
+    aggregateStatusCounts(FastRemoval),
+    aggregateStatusCounts(HouseVisit),
+    aggregateStatusCounts(RemovalRequest),
+  ]);
+
+  const statusCounts = {};
+
+  const mergeStatusCounts = (arr) => {
+    arr.forEach(({ _id, count }) => {
+      if (_id) statusCounts[_id] = (statusCounts[_id] || 0) + count;
+    });
+  };
+
+  mergeStatusCounts(fastStatuses);
+  mergeStatusCounts(houseStatuses);
+  mergeStatusCounts(removalStatuses);
+
+  return {
+    totalService,
+    totals: {
+      fastRemoval: fastRemovalCount,
+      houseVisit: houseVisitCount,
+      removalRequest: removalRequestCount,
+    },
+    statusCounts
+  };
 };
