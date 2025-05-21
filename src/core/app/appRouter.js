@@ -8,6 +8,7 @@ import fastRemovalRoutes from '../../entities/fastRemoval/fastRemoval.routes.js'
 import houseVisitRoutes from '../../entities/houseVisit/houseVisit.routes.js'
 import removalRequestRoutes from '../../entities/removalRequest/removalRequest.routes.js'
 import newsletterSubscriptionRoutes from '../../entities/newsletterSubscription/newsletterSubscription.routes.js'
+import reviewRoutes from '../../entities/review/review.routes.js'
 
 
 const router = express.Router();
@@ -22,5 +23,6 @@ router.use('/v1/houseVisit', houseVisitRoutes)
 router.use('/v1/fastRemoval', fastRemovalRoutes)
 router.use('/v1/removalRequest', removalRequestRoutes)
 router.use('/v1/newsletterSubscription', newsletterSubscriptionRoutes)
+router.use('/v1/review', reviewRoutes)
 
 export default router;
