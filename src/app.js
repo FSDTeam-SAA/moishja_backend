@@ -26,8 +26,8 @@ app.use(
     origin: "*"
   })
 );
-app.use(xssClean());
-app.use(mongoSanitize());
+//app.use(xssClean());
+//app.use(mongoSanitize());
 
 // Set up logging middleware
 app.use(morgan('combined'));
@@ -38,7 +38,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Set up rate limiting middleware
-app.use(globalLimiter);
+//app.use(globalLimiter);
 
 // Set up static files middleware
 const uploadPath = path.resolve(__dirname, "../uploads");
