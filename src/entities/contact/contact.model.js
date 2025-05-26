@@ -4,12 +4,10 @@ const contactSchema = new Schema(
   {
     firstName: {
       type: String,
-      required: true,
       trim: true
     },
     lastName: {
       type: String,
-      required: true,
       trim: true
     },
     address: {
@@ -17,15 +15,28 @@ const contactSchema = new Schema(
       trim: true
     },
     phoneNumber: {
-        type: String,
-        trim: true,
-        match: /^[0-9+\-\s()]{7,15}$/ 
+      type: String,
+      trim: true,
+      match: /^[0-9+\-\s()]{7,15}$/
     },
     message: {
       type: String,
       required: true,
       trim: true
-    }
+    },
+    socialLinks: [
+      {
+        platform: {
+          type: String,
+          trim: true
+        },
+        url: {
+          type: String,
+          trim: true,
+          match: /^https?:\/\/.+$/ // Basic URL validation
+        }
+      }
+    ]
   },
   {
     timestamps: true

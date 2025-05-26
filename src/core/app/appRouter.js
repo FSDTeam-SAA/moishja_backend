@@ -10,6 +10,7 @@ import removalRequestRoutes from '../../entities/removalRequest/removalRequest.r
 import newsletterSubscriptionRoutes from '../../entities/newsletterSubscription/newsletterSubscription.routes.js'
 import reviewRoutes from '../../entities/review/review.routes.js'
 import userServicesRoutes from '../../entities/userServices/userServices.routes.js'
+import aboutUs from '../../entities/admin/aboutUs/about.routes.js';
 import { getStats } from '../../lib/statController.js';
 
 
@@ -29,6 +30,7 @@ router.use('/v1/newsletterSubscription', newsletterSubscriptionRoutes)
 router.use('/v1/review', reviewRoutes)
 router.use('/v1/userServices', userServicesRoutes)
 router.use('/v1/stats',getStats) 
+router.use('/v1/aboutUs',aboutUs);
 
 
 export default router;

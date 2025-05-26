@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import RoleType from '../../lib/types.js';
 
-
 const serviceSchema = new mongoose.Schema(
   {
     name: {
@@ -10,10 +9,36 @@ const serviceSchema = new mongoose.Schema(
       trim: true,
       maxlength: [100, 'Service name cannot exceed 100 characters']
     },
+    title: {
+      type: String,
+      trim: true,
+      maxlength: [150, 'Title cannot exceed 150 characters']
+    },
+    content: {
+      type: String,
+      trim: true
+    },
     description: {
       type: String,
       required: [true, 'Description is required'],
-      maxlength: [1000, 'Description cannot exceed 1000 characters']
+     
+    },
+    metaTitle: {
+      type: String,
+      trim: true,
+     
+    },
+    metaDescription: {
+      type: String,
+      trim: true,
+   
+    },
+    focusKeywords: {
+      type: [String],
+      default: [],
+
+
+
     },
     price: {
       type: Number,
