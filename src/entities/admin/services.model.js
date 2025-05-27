@@ -3,6 +3,15 @@ import RoleType from '../../lib/types.js';
 
 const serviceSchema = new mongoose.Schema(
   {
+  
+    type: {
+      type: String,
+      enum: {
+        values: ['service', 'suburbs'],
+        message: 'Invalid type'
+      },
+      required: [true, 'Type is required']
+    },
     name: {
       type: String,
       required: [true, 'Service name is required'],
