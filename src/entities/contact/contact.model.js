@@ -1,8 +1,10 @@
+
 import mongoose, { Schema } from "mongoose";
 
 const contactSchema = new Schema(
   {
     firstName: {
+      required: [true, "First name is required"],
       type: String,
       trim: true
     },
@@ -15,28 +17,17 @@ const contactSchema = new Schema(
       trim: true
     },
     phoneNumber: {
+      required: [true, "Phone number is required"],
       type: String,
       trim: true,
       match: /^[0-9+\-\s()]{7,15}$/
     },
     message: {
       type: String,
-      
+      required: [true, "Message is required"],
       trim: true
     },
-    socialLinks: [
-      {
-        platform: {
-          type: String,
-          trim: true
-        },
-        url: {
-          type: String,
-          trim: true,
-          match: /^https?:\/\/.+$/ // Basic URL validation
-        }
-      }
-    ]
+    
   },
   {
     timestamps: true
