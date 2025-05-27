@@ -5,9 +5,6 @@ import { multerUpload } from '../../core/middlewares/multer.js';
 
 const router = express.Router();
 
-
-
-
 // Routes
 router.post('/create', verifyToken, adminMiddleware, multerUpload([{ name: "photos", maxCount: 5 },]), createService);
 router.get('/', verifyToken,adminMiddleware,getAllServices);
