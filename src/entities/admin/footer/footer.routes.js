@@ -8,7 +8,7 @@ const router = express.Router();
 
 // Connect to MongoDB before this
 router.post('/create',verifyToken, adminMiddleware, create);
-router.get('/',verifyToken, adminMiddleware,getAll);
+router.get('/',getAll);
 router.get('/:id',verifyToken, adminMiddleware,getById );
 router.put('/update/:id',verifyToken, adminMiddleware, update);
 router.delete('/:id',verifyToken, adminMiddleware, remove);
