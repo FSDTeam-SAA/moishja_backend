@@ -47,6 +47,12 @@ app.use("/uploads", express.static(uploadPath));
 // Set up API routes
 app.use('/api', appRouter);
 
+// Health check route
+app.get('/', (req, res) => {
+  res.send('✅ Health is good. Backend is running properly.');
+});
+
+
 // Set up 404 error middleware
 app.use(notFound);
 
