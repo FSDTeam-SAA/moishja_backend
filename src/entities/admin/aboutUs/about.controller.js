@@ -6,6 +6,7 @@ import {
   } from './about.service.js';
   import { generateResponse } from '../../../lib/responseFormate.js';
   
+  
   export const getAboutUs = async (req, res) => {
     try {
       const about = await getAboutUsService();
